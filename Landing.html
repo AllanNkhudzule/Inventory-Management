@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inventory</title>
+    </head>
+
+    <body>
+        <h1>INVENTORY MANAGEMENT</h1>
+
+        <div class="login">
+            <h2>Create an account</h2>
+            <p>Enter your email to sign in for this app</p>
+            <input type="email" placeholder="email@domain.com">
+            <button id="continue">Continue</button>
+            <div class="separator">or</div>
+
+            <button>Continue with Google</button>
+            <button>Continue with Apple</button>
+           
+            <p>By clicking Continue you agree to our Terms of Service
+                and Privacy policy
+            </p>
+
+
+        </div>
+    </body>
+
+    <style>
+        h1{
+            text-align: center;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        p{
+            text-align: center;
+        }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; 
+      min-height: 100vh;       
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+   }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+      margin: 20px 0;
+   }
+     
+    .separator::before, .separator::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #eee;
+    }
+
+   .separator:not(:empty)::before { margin-right: 10px; }
+   .separator:not(:empty)::after { margin-left: 10px; }
+
+    input, button {
+        width: 100%;
+        padding: 16px;
+        font-size: 16px;
+        margin: 8px 0;
+        border-radius: 10px; 
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+   }
+     .login {
+       width: 100%;          
+       max-width: 400px;    
+       text-align: center;
+    }
+
+    #continue{
+        background-color: black;
+        color: white;
+    }
+
+    /* This code only runs on screens smaller than 600px */
+   @media screen and (max-width: 600px) {
+     body {
+        padding-top: 20px; /* Moves the form up higher on mobile */
+    }
+    
+    h1 {
+        font-size: 1.5rem; /* Makes the title slightly smaller for mobile */
+    }
+}
+    </style>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inventory</title>
+
+        <style>
+            h1{
+                text-align: center;
+            }
+
+            h2{
+                text-align: center;
+            }
+
+            p{
+                text-align: center;
+            }
+
+            #password{
+                text-align: left;
+                margin-left: 5px;
+            }
+
+            .business{
+                text-align: left;
+                margin-left: 5px;
+            }
+
+           #name{
+                text-align: left;
+                margin-left: 5px;
+            }
+
+            #email{
+                text-align: left;
+                margin-left: 5px;
+            }
+
+            body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center; 
+              min-height: 100vh;       
+              margin: 0;
+              padding: 20px;
+              box-sizing: border-box;
+           }
+
+            .separator {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              color: #888;
+              font-size: 14px;
+              margin: 20px 0;
+           }
+             
+            .separator::before, .separator::after {
+                content: "";
+                flex: 1;
+                border-bottom: 1px solid #eee;
+            }
+
+           .separator:not(:empty)::before { margin-right: 10px; }
+           .separator:not(:empty)::after { margin-left: 10px; }
+
+            input, button {
+                width: 100%;
+                padding: 16px;
+                font-size: 16px;
+                margin: 8px 0;
+                border-radius: 10px; 
+                border: 1px solid #ddd;
+                box-sizing: border-box;
+            }
+
+            .signup {
+               width: 100%;          
+               max-width: 400px;    
+               text-align:center;    
+            }
+
+            #continue{
+                background-color: #18751b;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+             
+            button #continue:hover {
+                background-color: #145a16; 
+            }
+
+            @media screen {
+                body {
+                    padding-top: 20px; /* Moves the form up higher on mobile */
+                }
+                
+                h1 {
+                    font-size: 1.5rem; /* Makes the title slightly smaller for mobile */
+                }
+                            
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>INVENTORY MANAGEMENT</h1>
+
+        <div class="signup">
+            <h2>Sign Up</h2>
+            <p>Create your account by filling in the information below</p>
+            <p id ="name">First Name</p>
+            <input type="text" placeholder="Enter first name">
+            <p id="name">Last Name</p>
+            <input type="text" placeholder="Enter last name">
+            <p class="business">Business name</p>
+            <input type="text" placeholder="Enter Business Name">
+            <inpt type="number" placeholder="Phone Number">
+            <p id="email">Email</p>
+            <input type="email" placeholder="email@domain.com">
+            <p id="password">Password</p>
+            <input type="password" placeholder="Enter your Password">
+            <input type="confirm-password" placeholder="Confirm Password">
+
+            <button id="continue">Sign Up</button>
+
+            <p>Already have an Account? <a href="Landing.html">Log in</a></p>

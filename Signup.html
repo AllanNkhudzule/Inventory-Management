@@ -2,8 +2,62 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Inventory</title>
+
+    <script>
+    function togglePassword(inputId, icon) {
+        const input = document.getElementById(inputId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+
+    function validatePassword(){
+        const password = document.getElementById("passwordInput").value;  
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const errorMsg = document.getElementById('errorMessage');
+
+        if (password === '' || confirmPassword === '') {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = 'Please fill in both password fields!';
+            return false;
+        } else if (password !== confirmPassword) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = 'Passwords do not match!';
+            return false;
+        } else {
+            errorMsg.style.display = 'none';
+            alert('Account created successfully!');
+            return true;
+        }
+    }
+
+    // Optional: Real-time validation
+    function checkPasswordMatch() {
+        const password = document.getElementById('passwordInput').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const errorMsg = document.getElementById('errorMessage');
+
+        if (confirmPassword === '') {
+            errorMsg.style.display = 'none';
+        } else if (password !== confirmPassword) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = 'Passwords do not match!';
+        } else {
+            errorMsg.style.display = 'none';
+        }
+    }
+</script>
+
 
         <style>
             h1{
@@ -91,17 +145,54 @@
                 cursor: pointer;
             }
              
-            button #continue:hover {
+            #continue:hover {  
                 background-color: #145a16; 
             }
 
+            .password-wrapper {
+                position: relative;
+                width: 100%;
+            }
+
+            .password-wrapper input {
+                padding-right: 45px;   
+            }
+
+            .toggle-password {
+                position: absolute;
+                top: 50%;
+                right: 15px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                user-select: none;
+                color: #666;
+            }
+
+            .toggle-password:hover {
+                color: #000;
+            }
+            
+            .error-message {
+                display: none;
+                color: #d32f2f;
+                background-color: #ffebee;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px 0;
+                font-size: 14px;
+                text-align: left;
+                border-left: 4px solid #d32f2f;
+            }
+
+
             @media screen {
                 body {
-                    padding-top: 20px; /* Moves the form up higher on mobile */
+                    padding-top: 20px;
                 }
                 
                 h1 {
-                    font-size: 1.5rem; /* Makes the title slightly smaller for mobile */
+                    font-size: 1.5rem;
                 }
                             
             }
@@ -121,13 +212,27 @@
             <input type="text" placeholder="Enter last name">
             <p class="business">Business name</p>
             <input type="text" placeholder="Enter Business Name">
-            <inpt type="number" placeholder="Phone Number">
+            <p class="business">Phone Number</p>
+            <input type="tel" placeholder="Phone Number">  <!-- Changed to type="tel" -->
             <p id="email">Email</p>
             <input type="email" placeholder="email@domain.com">
-            <p id="password">Password</p>
-            <input type="password" placeholder="Enter your Password">
-            <input type="confirm-password" placeholder="Confirm Password">
 
-            <button id="continue">Sign Up</button>
+           <p id="password">Password</p>
+            <div class="password-wrapper">
+                    <input type="password" id="passwordInput" placeholder="Enter your Password" oninput="checkPasswordMatch()">
+                    <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('passwordInput', this)"></i>
+            </div>
+
+            <div class="password-wrapper">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" oninput="checkPasswordMatch()">
+                    <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+            </div>
+
+             <div id="errorMessage" class="error-message"></div>
+
+            <button id="continue" onclick="validatePassword()">Sign Up</button>
 
             <p>Already have an Account? <a href="Landing.html">Log in</a></p>
+        </div>
+    </body>
+</html>

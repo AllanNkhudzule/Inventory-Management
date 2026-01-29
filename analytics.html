@@ -1,359 +1,400 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sales Analytics</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            padding: 20px;
-            padding-bottom: 80px;
-            color: #2d3748;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f5f7fa;
+        padding: 20px;
+        padding-bottom: 80px;
+        color: #2d3748;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #1a202c;
-            font-weight: 600;
-        }
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #1a202c;
+        font-weight: 600;
+      }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
 
-        .lowstock-card {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            background: #FFF5F5;
-            border-left: 4px solid #E53E3E;
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+      .lowstock-card {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        background: #fff5f5;
+        border-left: 4px solid #e53e3e;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
 
-        .lowstock-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
+      .lowstock-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
 
-        .warning-icon {
-            color: #E53E3E;
-            font-size: 18px;
-        }
+      .warning-icon {
+        color: #e53e3e;
+        font-size: 18px;
+      }
 
-        .lowstock-title {
-            color: #C53030;
-            font-weight: 600;
-            font-size: 14px;
-        }
+      .lowstock-title {
+        color: #c53030;
+        font-weight: 600;
+        font-size: 14px;
+      }
 
-        .lowstock-items {
-            font-size: 13px;
-            color: #742A2A;
-        }
+      .lowstock-items {
+        font-size: 13px;
+        color: #742a2a;
+      }
 
-        .lowstock-item {
-            margin-bottom: 4px;
-        }
+      .lowstock-item {
+        margin-bottom: 4px;
+      }
 
-        .lowstock-link {
-            color: #E53E3E;
-            font-size: 13px;
-            text-decoration: none;
-            white-space: nowrap;
-        }
+      .lowstock-link {
+        color: #e53e3e;
+        font-size: 13px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
 
-        h2 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #2d3748;
-            font-weight: 600;
-        }
+      h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #2d3748;
+        font-weight: 600;
+      }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-        }
+      .chart-container {
+        position: relative;
+        width: 100%;
+      }
 
-        canvas {
-            display: block;
-            width: 100%;
-        }
+      canvas {
+        display: block;
+        width: 100%;
+      }
 
-        .navbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        }
+          .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #718096;
-            text-decoration: none;
-            font-size: 12px;
-        }
+      background: #ffffff;
+      border-top: 1px solid #e6e6e6;
 
-        .nav-item.active {
-            color: #E53E3E;
-        }
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
-        .nav-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
+      z-index: 100;
+    }
 
-        .active-indicator {
-            width: 40px;
-            height: 3px;
-            background: #000;
-            border-radius: 3px;
-            margin-top: 2px;
-        }
+    /* Nav button */
+    .nav-item {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+
+      font-size: 11px;
+      color: #999;
+    }
+
+
+    .nav-item .icon {
+      font-size: 20px;
+    }
+
+    .nav-item.active {
+      color: #e60000;
+      /* matches your red home icon */
+    }
+
+      .active-indicator {
+        width: 40px;
+        height: 3px;
+        background: #000;
+        border-radius: 3px;
+        margin-top: 2px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Analytics & Reporting</h1>
+      <h1>Analytics & Reporting</h1>
 
-        <div class="lowstock-card">
-            <div>
-                <div class="lowstock-header">
-                    <span class="warning-icon">⚠️</span>
-                    <span class="lowstock-title">Low Stock Alert</span>
-                </div>
-                <div class="lowstock-items">
-                    <div class="lowstock-item">Maize</div>
-                    <div class="lowstock-item">Milk</div>
-                </div>
-            </div>
-            <div>
-                <a href="#" class="lowstock-link">x 2 items(low)</a>
-            </div>
+      <div class="lowstock-card">
+        <div>
+          <div class="lowstock-header">
+            <span class="warning-icon">⚠️</span>
+            <span class="lowstock-title">Low Stock Alert</span>
+          </div>
+          <div class="lowstock-items">
+            <div class="lowstock-item">Maize</div>
+            <div class="lowstock-item">Milk</div>
+          </div>
         </div>
+        <div>
+          <a href="#" class="lowstock-link">x 2 items(low)</a>
+        </div>
+      </div>
 
-        <div class="card">
-            <h2>Sales Trend (Last 7 Days)</h2>
-            <div class="chart-container">
-                <canvas id="lineChart" width="700" height="400"></canvas>
-            </div>
+      <div class="card">
+        <h2>Sales Trend (Last 7 Days)</h2>
+        <div class="chart-container">
+          <canvas id="lineChart" width="700" height="400"></canvas>
         </div>
+      </div>
 
-        <div class="card">
-            <h2>Top Selling Products</h2>
-            <div class="chart-container">
-                <canvas id="barChart" width="700" height="400"></canvas>
-            </div>
+      <div class="card">
+        <h2>Top Selling Products</h2>
+        <div class="chart-container">
+          <canvas id="barChart" width="700" height="400"></canvas>
         </div>
+      </div>
     </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" id="home">
+        <span class="icon">🏠</span>
+      </button>
 
-    <div class="navbar">
-        <a href="#" class="nav-item">
-            <div class="nav-icon">🏠</div>
-        </a>
-        <a href="#" class="nav-item">
-            <div class="nav-icon">🛒</div>
-        </a>
-        <a href="#" class="nav-item">
-            <div class="nav-icon">📦</div>
-        </a>
-        <a href="#" class="nav-item active">
-            <div class="nav-icon">📊</div>
-            <div class="active-indicator"></div>
-        </a>
-    </div>
+      <button class="nav-item active" id="sales">
+        <span class="icon">🛒</span>
+      </button>
+
+      <button class="nav-item" id="product">
+        <span class="icon">📦</span>
+      </button>
+
+      <button class="nav-item" id="analytics">
+        <span class="icon">📊</span>
+      </button>
+    </nav>
 
     <script>
-        // Data for line chart - exponential growth over 7 days
-        const salesData = [0, 0, 3000, 10000, 20000, 40000, 65000];
-        const days = ["Dec 22", "Dec 23", "Dec 24", "Dec 25", "Dec 26", "Dec 27", "Dec 28"];
+      // Data for line chart - exponential growth over 7 days
+      const salesData = [0, 0, 3000, 10000, 20000, 40000, 65000];
+      const days = [
+        "Dec 22",
+        "Dec 23",
+        "Dec 24",
+        "Dec 25",
+        "Dec 26",
+        "Dec 27",
+        "Dec 28",
+      ];
 
-        // Data for bar chart
-        const topProducts = [
-            { name: "Yeast", value: 220000 },
-            { name: "Milk", value: 35000 },
-            { name: "Flour", value: 15000 },
-            { name: "Sugar", value: 10000 }
-        ];
+      // Data for bar chart
+      const topProducts = [
+        { name: "Yeast", value: 220000 },
+        { name: "Milk", value: 35000 },
+        { name: "Flour", value: 15000 },
+        { name: "Sugar", value: 10000 },
+      ];
 
-        // LINE CHART
-        const lineCanvas = document.getElementById("lineChart");
-        const lineCtx = lineCanvas.getContext("2d");
+      // LINE CHART
+      const lineCanvas = document.getElementById("lineChart");
+      const lineCtx = lineCanvas.getContext("2d");
 
-        const padding = 60;
-        const chartWidth = lineCanvas.width - padding * 2;
-        const chartHeight = lineCanvas.height - padding * 2;
+      const padding = 60;
+      const chartWidth = lineCanvas.width - padding * 2;
+      const chartHeight = lineCanvas.height - padding * 2;
 
-        const maxSalesValue = Math.max(...salesData);
-        const stepX = chartWidth / (salesData.length - 1);
+      const maxSalesValue = Math.max(...salesData);
+      const stepX = chartWidth / (salesData.length - 1);
 
-        // Draw grid lines and Y-axis labels
-        lineCtx.strokeStyle = "#e2e8f0";
-        lineCtx.lineWidth = 1;
-        lineCtx.fillStyle = "#718096";
-        lineCtx.font = "12px Arial";
-        lineCtx.textAlign = "right";
-        lineCtx.textBaseline = "middle";
+      // Draw grid lines and Y-axis labels
+      lineCtx.strokeStyle = "#e2e8f0";
+      lineCtx.lineWidth = 1;
+      lineCtx.fillStyle = "#718096";
+      lineCtx.font = "12px Arial";
+      lineCtx.textAlign = "right";
+      lineCtx.textBaseline = "middle";
 
-        const yTicks = 5;
-        for (let i = 0; i <= yTicks; i++) {
-            const value = (maxSalesValue / yTicks) * i;
-            const y = lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
+      const yTicks = 5;
+      for (let i = 0; i <= yTicks; i++) {
+        const value = (maxSalesValue / yTicks) * i;
+        const y =
+          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
 
-            // Grid line
-            lineCtx.beginPath();
-            lineCtx.moveTo(padding, y);
-            lineCtx.lineTo(lineCanvas.width - padding, y);
-            lineCtx.stroke();
-
-            // Y label
-            lineCtx.fillText(value.toFixed(0), padding - 10, y);
-        }
-
-        // Draw axes
-        lineCtx.strokeStyle = "#2d3748";
-        lineCtx.lineWidth = 2;
+        // Grid line
         lineCtx.beginPath();
-        lineCtx.moveTo(padding, padding);
-        lineCtx.lineTo(padding, lineCanvas.height - padding);
-        lineCtx.lineTo(lineCanvas.width - padding, lineCanvas.height - padding);
+        lineCtx.moveTo(padding, y);
+        lineCtx.lineTo(lineCanvas.width - padding, y);
         lineCtx.stroke();
 
-        // Draw line
-        lineCtx.beginPath();
-        salesData.forEach((value, index) => {
-            const x = padding + index * stepX;
-            const y = lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
+        // Y label
+        lineCtx.fillText(value.toFixed(0), padding - 10, y);
+      }
 
-            if (index === 0) {
-                lineCtx.moveTo(x, y);
-            } else {
-                lineCtx.lineTo(x, y);
-            }
-        });
+      // Draw axes
+      lineCtx.strokeStyle = "#2d3748";
+      lineCtx.lineWidth = 2;
+      lineCtx.beginPath();
+      lineCtx.moveTo(padding, padding);
+      lineCtx.lineTo(padding, lineCanvas.height - padding);
+      lineCtx.lineTo(lineCanvas.width - padding, lineCanvas.height - padding);
+      lineCtx.stroke();
 
-        lineCtx.strokeStyle = "#3182CE";
-        lineCtx.lineWidth = 3;
-        lineCtx.stroke();
+      // Draw line
+      lineCtx.beginPath();
+      salesData.forEach((value, index) => {
+        const x = padding + index * stepX;
+        const y =
+          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
 
-        // Draw points
-        salesData.forEach((value, index) => {
-            const x = padding + index * stepX;
-            const y = lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
-
-            lineCtx.beginPath();
-            lineCtx.arc(x, y, 5, 0, Math.PI * 2);
-            lineCtx.fillStyle = "#3182CE";
-            lineCtx.fill();
-        });
-
-        // Draw X-axis labels
-        lineCtx.fillStyle = "#2d3748";
-        lineCtx.font = "11px Arial";
-        lineCtx.textAlign = "center";
-        lineCtx.textBaseline = "top";
-
-        days.forEach((day, index) => {
-            const x = padding + index * stepX;
-            const y = lineCanvas.height - padding + 10;
-            lineCtx.fillText(day, x, y);
-        });
-
-        // BAR CHART
-        const barCanvas = document.getElementById("barChart");
-        const barCtx = barCanvas.getContext("2d");
-
-        const maxBarValue = Math.max(...topProducts.map(p => p.value));
-        const barWidth = 80;
-        const totalBarsWidth = topProducts.length * barWidth + (topProducts.length - 1) * 40;
-        const barStartX = (barCanvas.width - totalBarsWidth) / 2;
-        const barScale = chartHeight / maxBarValue;
-
-        // Draw grid lines and Y-axis labels
-        barCtx.strokeStyle = "#e2e8f0";
-        barCtx.lineWidth = 1;
-        barCtx.fillStyle = "#718096";
-        barCtx.font = "12px Arial";
-        barCtx.textAlign = "right";
-        barCtx.textBaseline = "middle";
-
-        for (let i = 0; i <= yTicks; i++) {
-            const value = (maxBarValue / yTicks) * i;
-            const y = barCanvas.height - padding - (value / maxBarValue) * chartHeight;
-
-            // Grid line
-            barCtx.beginPath();
-            barCtx.moveTo(padding, y);
-            barCtx.lineTo(barCanvas.width - padding, y);
-            barCtx.stroke();
-
-            // Y label
-            barCtx.fillText(value.toFixed(0), padding - 10, y);
+        if (index === 0) {
+          lineCtx.moveTo(x, y);
+        } else {
+          lineCtx.lineTo(x, y);
         }
+      });
 
-        // Draw axes
-        barCtx.strokeStyle = "#2d3748";
-        barCtx.lineWidth = 2;
+      lineCtx.strokeStyle = "#3182CE";
+      lineCtx.lineWidth = 3;
+      lineCtx.stroke();
+
+      // Draw points
+      salesData.forEach((value, index) => {
+        const x = padding + index * stepX;
+        const y =
+          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
+
+        lineCtx.beginPath();
+        lineCtx.arc(x, y, 5, 0, Math.PI * 2);
+        lineCtx.fillStyle = "#3182CE";
+        lineCtx.fill();
+      });
+
+      // Draw X-axis labels
+      lineCtx.fillStyle = "#2d3748";
+      lineCtx.font = "11px Arial";
+      lineCtx.textAlign = "center";
+      lineCtx.textBaseline = "top";
+
+      days.forEach((day, index) => {
+        const x = padding + index * stepX;
+        const y = lineCanvas.height - padding + 10;
+        lineCtx.fillText(day, x, y);
+      });
+
+      // BAR CHART
+      const barCanvas = document.getElementById("barChart");
+      const barCtx = barCanvas.getContext("2d");
+
+      const maxBarValue = Math.max(...topProducts.map((p) => p.value));
+      const barWidth = 80;
+      const totalBarsWidth =
+        topProducts.length * barWidth + (topProducts.length - 1) * 40;
+      const barStartX = (barCanvas.width - totalBarsWidth) / 2;
+      const barScale = chartHeight / maxBarValue;
+
+      // Draw grid lines and Y-axis labels
+      barCtx.strokeStyle = "#e2e8f0";
+      barCtx.lineWidth = 1;
+      barCtx.fillStyle = "#718096";
+      barCtx.font = "12px Arial";
+      barCtx.textAlign = "right";
+      barCtx.textBaseline = "middle";
+
+      for (let i = 0; i <= yTicks; i++) {
+        const value = (maxBarValue / yTicks) * i;
+        const y =
+          barCanvas.height - padding - (value / maxBarValue) * chartHeight;
+
+        // Grid line
         barCtx.beginPath();
-        barCtx.moveTo(padding, padding);
-        barCtx.lineTo(padding, barCanvas.height - padding);
-        barCtx.lineTo(barCanvas.width - padding, barCanvas.height - padding);
+        barCtx.moveTo(padding, y);
+        barCtx.lineTo(barCanvas.width - padding, y);
         barCtx.stroke();
 
-        // Draw bars
-        topProducts.forEach((product, index) => {
-            const x = barStartX + index * (barWidth + 40);
-            const height = product.value * barScale;
-            const y = barCanvas.height - padding - height;
+        // Y label
+        barCtx.fillText(value.toFixed(0), padding - 10, y);
+      }
 
-            barCtx.fillStyle = "#3182CE";
-            barCtx.fillRect(x, y, barWidth, height);
-        });
+      // Draw axes
+      barCtx.strokeStyle = "#2d3748";
+      barCtx.lineWidth = 2;
+      barCtx.beginPath();
+      barCtx.moveTo(padding, padding);
+      barCtx.lineTo(padding, barCanvas.height - padding);
+      barCtx.lineTo(barCanvas.width - padding, barCanvas.height - padding);
+      barCtx.stroke();
 
-        // Draw X-axis labels
-        barCtx.fillStyle = "#2d3748";
-        barCtx.font = "12px Arial";
-        barCtx.textAlign = "center";
-        barCtx.textBaseline = "top";
+      // Draw bars
+      topProducts.forEach((product, index) => {
+        const x = barStartX + index * (barWidth + 40);
+        const height = product.value * barScale;
+        const y = barCanvas.height - padding - height;
 
-        topProducts.forEach((product, index) => {
-            const x = barStartX + index * (barWidth + 40) + barWidth / 2;
-            const y = barCanvas.height - padding + 10;
-            barCtx.fillText(product.name, x, y);
-        });
+        barCtx.fillStyle = "#3182CE";
+        barCtx.fillRect(x, y, barWidth, height);
+      });
+
+      // Draw X-axis labels
+      barCtx.fillStyle = "#2d3748";
+      barCtx.font = "12px Arial";
+      barCtx.textAlign = "center";
+      barCtx.textBaseline = "top";
+
+      topProducts.forEach((product, index) => {
+        const x = barStartX + index * (barWidth + 40) + barWidth / 2;
+        const y = barCanvas.height - padding + 10;
+        barCtx.fillText(product.name, x, y);
+      });
+
+      document.getElementById("home").addEventListener("click", () => {
+        window.location.href = "Dashboard.html";
+      });
+
+      document.getElementById("sales").addEventListener("click", () => {
+        window.location.href = "Sales.html";
+      });
+
+      document.getElementById("product").addEventListener("click", () => {
+        window.location.href = "products.html";
+      });
+
+      document.getElementById("analytics").addEventListener("click", () => {
+        window.location.href = "analytics.html";
+      });
     </script>
-</body>
-
+  </body>
 </html>

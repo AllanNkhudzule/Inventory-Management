@@ -49,19 +49,19 @@
      </section>
 
       <nav class="bottom-nav">
-            <button class="nav-item">
+            <button class="nav-item" id="home">
                 <span class="icon">🏠</span>
             </button>
 
-            <button class="nav-item active">
+            <button class="nav-item active" id="sales">
                 <span class="icon">🛒</span>
             </button>
 
-            <button class="nav-item ">
+            <button class="nav-item " id="invento">
                 <span class="icon">📦</span>
             </button>
             
-            <button class="nav-item">
+            <button class="nav-item" id="analytics">
                 <span class="icon">📊</span>
             </button>
 
@@ -83,6 +83,18 @@
      cancelBtn.addEventListener('click', function() {
             formModal.classList.add('hidden');  // Hide form
     });
+
+    document.getElementById('home').addEventListener('click', () => 
+  {window.location.href = 'Dashboard.html'})
+
+  document.getElementById('sales').addEventListener('click', () => 
+  {window.location.href = 'Sales.html'})
+
+  document.getElementById('invento').addEventListener('click', () => 
+  {window.location.href = 'products.html'})
+
+  document.getElementById('analytics').addEventListener('click', () => 
+  {window.location.href = 'analytics.html'})
 
     form.addEventListener('submit', function(e) {
             e.preventDefault();  // Stop page refresh

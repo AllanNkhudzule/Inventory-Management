@@ -1,192 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inventory</title>
-         <style>
-        h1{
-            text-align: center;
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory</title>
+    <style>
+      h1 {
+        text-align: center;
+      }
 
-        h2{
-            text-align: center;
-        }
+      h2 {
+        text-align: center;
+      }
 
-        p{
-            text-align: center;
-        }
-    #password{
+      p {
+        text-align: center;
+      }
+      #password {
         text-align: left;
         margin-left: 5px;
-    }
+      }
 
-    #email{
+      #email {
         text-align: left;
         margin-left: 5px;
-    }
+      }
 
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center; 
-      min-height: 100vh;       
-      margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
-   }
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
 
-    .separator {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-      margin: 20px 0;
-   }
-     
-    .separator::before, .separator::after {
+      .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #888;
+        font-size: 14px;
+        margin: 20px 0;
+      }
+
+      .separator::before,
+      .separator::after {
         content: "";
         flex: 1;
         border-bottom: 1px solid #eee;
-    }
+      }
 
-   .separator:not(:empty)::before { margin-right: 10px; }
-   .separator:not(:empty)::after { margin-left: 10px; }
+      .separator:not(:empty)::before {
+        margin-right: 10px;
+      }
+      .separator:not(:empty)::after {
+        margin-left: 10px;
+      }
 
-    input, button {
+      input,
+      button {
         width: 100%;
         padding: 16px;
         font-size: 16px;
         margin: 8px 0;
-        border-radius: 10px; 
+        border-radius: 10px;
         border: 1px solid #ddd;
         box-sizing: border-box;
-    }
+      }
 
-    .login {
-       width: 100%;          
-       max-width: 400px;    
-       text-align: center;
-    }
+      .login {
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
 
-    #continue{
-        background-color: #18751b; 
-        color: white;           
-        border: none;          
-        cursor: pointer;       
-    }
+      #continue {
+        background-color: #18751b;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
 
-    #continue:hover {
-        background-color: #145a16; 
-    }
-    
-    .google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff;
-    color: #1f1f1f;
-    border: 1px solid #747775;
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    }
+      #continue:hover {
+        background-color: #145a16;
+      }
 
-    .google-btn:hover {
-    background-color: #f8f9fa;
-    }
+      .google-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        color: #1f1f1f;
+        border: 1px solid #747775;
+        border-radius: 4px;
+        padding: 10px 16px;
+        font-family: "Roboto", sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
 
-    .google-btn svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    }
-    .apple-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000000; /* Apple usually uses black buttons */
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    }
+      .google-btn:hover {
+        background-color: #f8f9fa;
+      }
 
-    .apple-btn:hover {
-    opacity: 0.8;
-    }
+      .google-btn svg {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+      }
+      .apple-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #000000; /* Apple usually uses black buttons */
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
 
-    .apple-btn svg {
-    width: 17px;
-    height: 17px;
-    margin-right: 10px;
-    margin-bottom: 4px; /* Tiny adjustment for visual alignment */
-    }
+      .apple-btn:hover {
+        opacity: 0.8;
+      }
 
+      .apple-btn svg {
+        width: 17px;
+        height: 17px;
+        margin-right: 10px;
+        margin-bottom: 4px; /* Tiny adjustment for visual alignment */
+      }
 
-    /* This code only runs on screens smaller than 600px */
-   @media screen and (max-width: 600px) {
-     body {
-        padding-top: 20px; /* Moves the form up higher on mobile */
-    }
-    
-    h1 {
-        font-size: 1.5rem; /* Makes the title slightly smaller for mobile */
-    }
-  }
+      /* This code only runs on screens smaller than 600px */
+      @media screen and (max-width: 600px) {
+        body {
+          padding-top: 20px; /* Moves the form up higher on mobile */
+        }
+
+        h1 {
+          font-size: 1.5rem; /* Makes the title slightly smaller for mobile */
+        }
+      }
     </style>
-    </head>
+  </head>
 
-    <body>
-        <h1>INVENTORY MANAGEMENT</h1>
+  <body>
+    <h1>INVENTORY MANAGEMENT</h1>
 
-        <div class="login">
-            <h2>Login</h2>
-            <p>Enter your email and password to sign in for this app</p>
-            <p id="email">Email</p>
-            <input type="email" placeholder="email@domain.com">
-            <p id="password">Password</p>
-            <input type="password"placeholder="password"> 
-            <button id="continue">Sign in</button>
-            <div class="separator">or</div>
+    <div class="login">
+      <h2>Login</h2>
+      <p>Enter your email and password to sign in for this app</p>
+      <p id="email">Email</p>
+      <input type="email" placeholder="email@domain.com" />
+      <p id="password">Password</p>
+      <input type="password" placeholder="password" />
+      <button id="continue">Sign in</button>
+      <div class="separator">or</div>
 
+      <button class="google-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid"
+          viewBox="0 0 256 262"
+        >
+          <path
+            fill="#4285F4"
+            d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+          />
+          <path
+            fill="#34A853"
+            d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.054-45.257 13.054-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+          />
+          <path
+            fill="#FBBC05"
+            d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.261 71.93l-1.445.69C4.641 93.508 0 111.495 0 130.55s4.641 37.043 13.816 57.928l42.465-32.109"
+          />
+          <path
+            fill="#EA4335"
+            d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.816 72.62l42.465 32.109c10.445-31.477 39.746-54.25 74.269-54.25"
+          />
+        </svg>
+        <span>Continue with Google</span>
+      </button>
 
-            <button class="google-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
-                <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"/>
-                <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.054-45.257 13.054-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"/>
-                <path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.261 71.93l-1.445.69C4.641 93.508 0 111.495 0 130.55s4.641 37.043 13.816 57.928l42.465-32.109"/>
-                <path fill="#EA4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.816 72.62l42.465 32.109c10.445-31.477 39.746-54.25 74.269-54.25"/>
-            </svg>
-            <span>Continue with Google</span>
-            </button>
-            
-            <button class="apple-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 21.8-88.5 21.8-11.4 0-50.1-21.1-78.7-21.1-38.2 0-81.8 24.6-103.8 61.3-46.8 78.8-12 217 32 281 21.4 31.2 57.3 66.2 96.5 64.9 37.9-1.3 52.1-24.3 97.6-24.3 45.1 0 58.7 24.3 97.9 23.6 40.3-.7 71.3-31.4 95.8-67.1 28.5-41.6 40.1-82.1 40.2-84.2-.9-.4-77.3-29.7-77.5-111.5zM277.7 88.1c19.4-23.6 32.7-56.3 29.2-88.1-27.9 1.1-61.7 18.6-81.7 42.1-18 20.9-33.8 54.4-29.6 85.3 31.1 2.4 62.7-15.7 82.1-39.3z"/>
-            </svg>
-            <span>Continue with Apple</span>
-            </button>
-            
-            <p>Don't have an Account? <a href="Signup.html">Sign up</a></p>
-            <p>By clicking Sign in you agree to our Terms of Service
-                and Privacy policy
-            </p>
+      <button class="apple-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+          <path
+            fill="currentColor"
+            d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 21.8-88.5 21.8-11.4 0-50.1-21.1-78.7-21.1-38.2 0-81.8 24.6-103.8 61.3-46.8 78.8-12 217 32 281 21.4 31.2 57.3 66.2 96.5 64.9 37.9-1.3 52.1-24.3 97.6-24.3 45.1 0 58.7 24.3 97.9 23.6 40.3-.7 71.3-31.4 95.8-67.1 28.5-41.6 40.1-82.1 40.2-84.2-.9-.4-77.3-29.7-77.5-111.5zM277.7 88.1c19.4-23.6 32.7-56.3 29.2-88.1-27.9 1.1-61.7 18.6-81.7 42.1-18 20.9-33.8 54.4-29.6 85.3 31.1 2.4 62.7-15.7 82.1-39.3z"
+          />
+        </svg>
+        <span>Continue with Apple</span>
+      </button>
 
-
-        </div>
-    </body>
-
-   
+      <p>Don't have an Account? <a href="Signup.html">Sign up</a></p>
+      <p>
+        By clicking Sign in you agree to our Terms of Service and Privacy policy
+      </p>
+    </div>
+  </body>
+  <script>
+    document.getElementById("continue").addEventListener("click", () => {
+      window.location.href = "Dashboard.html";
+    });
+  </script>
 </html>
+

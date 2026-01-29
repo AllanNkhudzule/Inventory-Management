@@ -259,35 +259,47 @@
       gap: 8px;
     }
 
-    .navbar {
+    .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
-      right: 0;
-      background: white;
-      border-top: 1px solid #e2e8f0;
+      width: 100%;
+      height: 64px;
+
+      background: #ffffff;
+      border-top: 1px solid #e6e6e6;
+
       display: flex;
       justify-content: space-around;
-      padding: 12px 0;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      align-items: center;
+
+      z-index: 100;
     }
 
+    /* Nav button */
     .nav-item {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: #718096;
-      text-decoration: none;
-      font-size: 12px;
+      gap: 4px;
+
+      font-size: 11px;
+      color: #999;
+    }
+
+
+    .nav-item .icon {
+      font-size: 20px;
     }
 
     .nav-item.active {
-      color: #E53E3E;
-    }
-
-    .nav-icon {
-      font-size: 24px;
-      margin-bottom: 4px;
+      color: #e60000;
+      /* matches your red home icon */
     }
 
     .active-indicator {
@@ -402,167 +414,177 @@
     </div>
   </div>
 
-  <div class="navbar">
-    <a href="#" class="nav-item">
-      <div class="nav-icon">🏠</div>
-    </a>
-    <a href="#" class="nav-item">
-      <div class="nav-icon">🛒</div>
-    </a>
-    <a href="#" class="nav-item">
-      <div class="nav-icon">📦</div>
-      <div class="active-indicator"></div>
-    </a>
-    <a href="#" class="nav-item active">
-      <div class="nav-icon">📊</div>
-      
-    </a>
-  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" id="home">
+      <span class="icon">🏠</span>
+    </button>
 
-  <script>
-    let products = [];
-    let editingId = null;
+    <button class="nav-item active" id="sales">
+      <span class="icon">🛒</span>
+    </button>
 
-    function openModal(product) {
-      const modal = document.getElementById('productModal');
-      const form = document.getElementById('productForm');
-      const title = document.getElementById('modalTitle');
-      const submitBtn = document.getElementById('submitBtn');
+    <button class="nav-item " id="product">
+      <span class="icon">📦</span>
+    </button>
 
-      if (product) {
-        editingId = product.id;
-        title.textContent = 'Edit Product';
-        submitBtn.textContent = 'Update Product';
-        document.getElementById('name').value = product.name;
-        document.getElementById('price').value = product.price;
-        document.getElementById('quantity').value = product.quantity;
-        document.getElementById('category').value = product.category;
-        document.getElementById('minStock').value = product.minStock;
-      } else {
-        editingId = null;
-        title.textContent = 'Add New Product';
-        submitBtn.textContent = 'Add Product';
-        form.reset();
-      }
+    <button class="nav-item" id="analytics">
+      <span class="icon">📊</span>
+    </button>
+  </nav>  
 
-      modal.classList.add('active');
-    }
+</body>
+<script>
+  let products = [];
+  let editingId = null;
 
-    function closeModal() {
-      const modal = document.getElementById('productModal');
-      modal.classList.remove('active');
-      document.getElementById('productForm').reset();
+  function openModal(product) {
+    const modal = document.getElementById('productModal');
+    const form = document.getElementById('productForm');
+    const title = document.getElementById('modalTitle');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (product) {
+      editingId = product.id;
+      title.textContent = 'Edit Product';
+      submitBtn.textContent = 'Update Product';
+      document.getElementById('name').value = product.name;
+      document.getElementById('price').value = product.price;
+      document.getElementById('quantity').value = product.quantity;
+      document.getElementById('category').value = product.category;
+      document.getElementById('minStock').value = product.minStock;
+    } else {
       editingId = null;
+      title.textContent = 'Add New Product';
+      submitBtn.textContent = 'Add Product';
+      form.reset();
     }
 
-    function handleSubmit(e) {
-      e.preventDefault();
+    modal.classList.add('active');
+  }
 
-      const productData = {
-        id: editingId || Date.now().toString(),
-        name: document.getElementById('name').value,
-        price: parseFloat(document.getElementById('price').value),
-        quantity: parseInt(document.getElementById('quantity').value),
-        category: document.getElementById('category').value,
-        minStock: parseInt(document.getElementById('minStock').value)
-      };
+  function closeModal() {
+    const modal = document.getElementById('productModal');
+    modal.classList.remove('active');
+    document.getElementById('productForm').reset();
+    editingId = null;
+  }
 
-      if (editingId) {
-        const index = products.findIndex(p => p.id === editingId);
-        if (index !== -1) {
-          products[index] = productData;
-        }
-      } else {
-        products.push(productData);
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const productData = {
+      id: editingId || Date.now().toString(),
+      name: document.getElementById('name').value,
+      price: parseFloat(document.getElementById('price').value),
+      quantity: parseInt(document.getElementById('quantity').value),
+      category: document.getElementById('category').value,
+      minStock: parseInt(document.getElementById('minStock').value)
+    };
+
+    if (editingId) {
+      const index = products.findIndex(p => p.id === editingId);
+      if (index !== -1) {
+        products[index] = productData;
       }
-
-      renderProducts();
-      closeModal();
+    } else {
+      products.push(productData);
     }
-
-    function deleteProduct(id) {
-      if (confirm('Are you sure you want to delete this product?')) {
-        products = products.filter(p => p.id !== id);
-        renderProducts();
-      }
-    }
-
-    function filterProducts() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      renderProducts(query);
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function renderProducts(searchQuery) {
-      searchQuery = searchQuery || '';
-      const tbody = document.getElementById('productTable');
-
-      let filteredProducts = products;
-      if (searchQuery) {
-        filteredProducts = products.filter(function (p) {
-          return p.name.toLowerCase().includes(searchQuery) ||
-            p.category.toLowerCase().includes(searchQuery);
-        });
-      }
-
-      if (filteredProducts.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">' +
-          (searchQuery ? 'No products found' : 'No products yet. Add your first product!') +
-          '</td></tr>';
-        return;
-      }
-
-      let html = '';
-      filteredProducts.forEach(function (product) {
-        const isLowStock = product.quantity <= product.minStock;
-        const quantityClass = isLowStock ? 'text-warning' : '';
-
-        html += '<tr>' +
-          '<td>' + escapeHtml(product.name) + '</td>' +
-          '<td>' + escapeHtml(product.category) + '</td>' +
-          '<td class="text-right">MK ' + product.price.toFixed(2) + '</td>' +
-          '<td class="text-right"><span class="' + quantityClass + '">' + product.quantity + '</span></td>' +
-          '<td class="text-right">' + product.minStock + '</td>' +
-          '<td class="text-right">' +
-          '<div class="actions-cell">' +
-          '<button class="btn btn-ghost" onclick="editProduct(\'' + product.id + '\')">' +
-          '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>' +
-          '</svg>' +
-          '</button>' +
-          '<button class="btn btn-ghost" onclick="deleteProduct(\'' + product.id + '\')">' +
-          '<svg class="icon text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>' +
-          '</svg>' +
-          '</button>' +
-          '</div>' +
-          '</td>' +
-          '</tr>';
-      });
-
-      tbody.innerHTML = html;
-    }
-
-    function editProduct(id) {
-      const product = products.find(function (p) { return p.id === id; });
-      if (product) {
-        openModal(product);
-      }
-    }
-
-    document.getElementById('productModal').addEventListener('click', function (e) {
-      if (e.target === this) {
-        closeModal();
-      }
-    });
 
     renderProducts();
-  </script>
-</body>
+    closeModal();
+  }
+
+  function deleteProduct(id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      products = products.filter(p => p.id !== id);
+      renderProducts();
+    }
+  }
+
+  function filterProducts() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    renderProducts(query);
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function renderProducts(searchQuery) {
+    searchQuery = searchQuery || '';
+    const tbody = document.getElementById('productTable');
+
+    let filteredProducts = products;
+    if (searchQuery) {
+      filteredProducts = products.filter(function (p) {
+        return p.name.toLowerCase().includes(searchQuery) ||
+          p.category.toLowerCase().includes(searchQuery);
+      });
+    }
+
+    if (filteredProducts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">' +
+        (searchQuery ? 'No products found' : 'No products yet. Add your first product!') +
+        '</td></tr>';
+      return;
+    }
+
+    let html = '';
+    filteredProducts.forEach(function (product) {
+      const isLowStock = product.quantity <= product.minStock;
+      const quantityClass = isLowStock ? 'text-warning' : '';
+
+      html += '<tr>' +
+        '<td>' + escapeHtml(product.name) + '</td>' +
+        '<td>' + escapeHtml(product.category) + '</td>' +
+        '<td class="text-right">MK ' + product.price.toFixed(2) + '</td>' +
+        '<td class="text-right"><span class="' + quantityClass + '">' + product.quantity + '</span></td>' +
+        '<td class="text-right">' + product.minStock + '</td>' +
+        '<td class="text-right">' +
+        '<div class="actions-cell">' +
+        '<button class="btn btn-ghost" onclick="editProduct(\'' + product.id + '\')">' +
+        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>' +
+        '</svg>' +
+        '</button>' +
+        '<button class="btn btn-ghost" onclick="deleteProduct(\'' + product.id + '\')">' +
+        '<svg class="icon text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>' +
+        '</svg>' +
+        '</button>' +
+        '</div>' +
+        '</td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function editProduct(id) {
+    const product = products.find(function (p) { return p.id === id; });
+    if (product) {
+      openModal(product);
+    }
+  }
+
+  document.getElementById('productModal').addEventListener('click', function (e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+
+  document.getElementById('home').addEventListener('click', () => { window.location.href = 'Dashboard.html' })
+
+  document.getElementById('sales').addEventListener('click', () => { window.location.href = 'Sales.html' })
+
+  document.getElementById('product').addEventListener('click', () => { window.location.href = 'products.html' })
+
+  document.getElementById('analytics').addEventListener('click', () => { window.location.href = 'analytics.html' })
+
+  renderProducts();
+</script>
+
 
 </html>

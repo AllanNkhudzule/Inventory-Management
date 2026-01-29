@@ -1,270 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>Dashboard</title>
-    </head>
-    <body>
-        <div class="Dashboard">
-            <header>
-                <h1>Inventory Dashboard</h1>
-                <h2>Hello 👋</h2>
 
-            </header>
-           <div class="info-grid">
-               <div class="card">
-                  <h3>TOTAL PRODUCTS</h3>
-                   <p id="total-products">0</p> 
-               </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
 
-               <div class="card">
-                  <h3>TODAY'S SALES</h3>
-                   <p id="today-sales">MK 0</p> 
-               </div>
+<body>
+    <div class="Dashboard">
+        <header>
+            <h1>Inventory Dashboard</h1>
+            <h2>Hello 👋</h2>
 
-               <div class="card">
-                  <h3>INVENTORY VALUE</h3>
-                   <p id="inventory-value">MK 0</p> 
-               </div>
-
-               <div class="card">
-                  <h3>TOTAL PRODUCTS</h3>
-                   <p id="total-products">0</p> 
-               </div>
-
-               <div class="card">
-                  <h3>PROFIT</h3>
-                   <p id="total-profit">MK 0</p> 
-               </div>
-
-           </div>
-        </div>
-
-        <div class="section-box1">
-            <div class="alert-card">
-                  <h3>⚠️Low stock alerts</h3>    
+        </header>
+        <div class="info-grid">
+            <div class="card">
+                <h3>TOTAL PRODUCTS</h3>
+                <p id="total-products">0</p>
             </div>
+
+            <div class="card">
+                <h3>TODAY'S SALES</h3>
+                <p id="today-sales">MK 0</p>
+            </div>
+
+            <div class="card">
+                <h3>INVENTORY VALUE</h3>
+                <p id="inventory-value">MK 0</p>
+            </div>
+
+            <div class="card">
+                <h3>TOTAL PRODUCTS</h3>
+                <p id="total-products">0</p>
+            </div>
+
+            <div class="card">
+                <h3>PROFIT</h3>
+                <p id="total-profit">MK 0</p>
+            </div>
+
         </div>
-        
-        <div class="section-box2">
-               <div class="alert-card">
-                  <h3>📈High Selling products</h3>
-               </div>
+    </div>
+
+    <div class="section-box1">
+        <div class="alert-card">
+            <h3>⚠️Low stock alerts</h3>
         </div>
+    </div>
 
-        <nav class="bottom-nav">
-            <button class="nav-item active">
-                <span class="icon">🏠</span>
-            </button>
+    <div class="section-box2">
+        <div class="alert-card">
+            <h3>📈High Selling products</h3>
+        </div>
+    </div>
 
-            <button class="nav-item">
-                <span class="icon">🛒</span>
-            </button>
+    <nav class="bottom-nav">
+        <button class="nav-item" id="home">
+            <span class="icon">🏠</span>
+        </button>
 
-            <button class="nav-item ">
-                <span class="icon">📦</span>
-            </button>
-            
-            <button class="nav-item">
-                <span class="icon">📊</span>
-            </button>
+        <button class="nav-item active" id="sales">
+            <span class="icon">🛒</span>
+        </button>
+
+        <button class="nav-item " id="product">
+            <span class="icon">📦</span>
+        </button>
+
+        <button class="nav-item" id="analytics">
+            <span class="icon">📊</span>
+        </button>
+    </nav>
+
+
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background-color: #ffffff;
+        color: #111;
+    }
+
+    header {
+        margin-bottom: 14px;
+    }
+
+    header h1 {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+
+    .card {
+        background: #ffffff;
+        border: 1px solid #e6e6e6;
+        border-radius: 12px;
+        padding: 14px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card h3 {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #222;
+    }
+
+    .card p {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.1;
+        color: #000;
+    }
+
+    .section-box1 {
+        background: gray;
+        border: 1px solid #e6e6e6;
+        border-radius: 1px;
+        padding: 14px;
+        min-height: 120px;
+
+        color: red;
+        display: flex;
+        align-items: flex-start;
+        /* top */
+        justify-content: flex-start;
+    }
+
+    .section-box2 {
+        background: gray;
+        border: 2px solid #e6e6e6;
+        border-radius: 1px;
+        padding: 14px;
+        min-height: 120px;
+
+        color: green;
+        display: flex;
+        align-items: flex-start;
+        /* top */
+        justify-content: flex-start;
+    }
+
+    .section-box1 h3 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .section-box2 h3 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 64px;
+
+        background: #ffffff;
+        border-top: 1px solid #e6e6e6;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        z-index: 100;
+    }
+
+    /* Nav button */
+    .nav-item {
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        font-size: 11px;
+        color: #999;
+    }
+
+    /* Icon */
+    .nav-item .icon {
+        font-size: 20px;
+    }
+
+    /* Active state */
+    .nav-item.active {
+        color: #e60000;
+        /* matches your red home icon */
+    }
+
+    /* Prevent content from hiding behind nav */
+    body {
+        padding-bottom: 80px;
+    }
 
 
 
-        </nav>
-
-
-    </body>
-
-    <style>
-        *{
-            box-sizing: border-box;
-        }
-
+    @media (max-width: 360px) {
         body {
-            margin: 0;
-            padding: 14px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #111;
-        }
-
-        header {
-            margin-bottom: 14px;
-        }
-
-        header h1 {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 0;
+            padding: 12px;
         }
 
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 12px;
+            gap: 8px;
         }
-
 
         .card {
-            background: #ffffff;
-            border: 1px solid #e6e6e6;
-            border-radius: 12px;
-            padding: 14px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: #222;
+            padding: 12px;
         }
 
         .card p {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1.1;
-            color: #000;
-        }
-        
-        .section-box1{
-          background: gray;
-          border: 1px solid #e6e6e6;
-          border-radius: 1px;
-          padding: 14px;
-          min-height: 120px; 
-
-          color: red;
-          display: flex;
-          align-items: flex-start;     /* top */
-          justify-content: flex-start;
-        }
-        
-        .section-box2{
-          background: gray;
-          border: 2px solid #e6e6e6;
-          border-radius: 1px;
-          padding: 14px;
-          min-height: 120px; 
-
-          color: green;
-          display: flex;
-          align-items: flex-start;     /* top */
-          justify-content: flex-start;
-        }
-        
-        .section-box1 h3 {
-            margin: 0;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-        .section-box2 h3 {
-            margin: 0;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 64px;
-
-            background: #ffffff;
-            border-top: 1px solid #e6e6e6;
-
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-
-            z-index: 100;
-        }
-
-        /* Nav button */
-        .nav-item {
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-
-            font-size: 11px;
-            color: #999;
-        }
-
-        /* Icon */
-        .nav-item .icon {
             font-size: 20px;
         }
+    }
 
-        /* Active state */
-        .nav-item.active {
-            color: #e60000; /* matches your red home icon */
+
+    @media (min-width: 600px) {
+        .info-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+
+    @media (min-width: 1024px) {
+        .info-grid {
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Prevent content from hiding behind nav */
-        body {
-            padding-bottom: 80px;
+        header h1 {
+            font-size: 22px;
         }
+    }
+</style>
 
+<script>
+    document.getElementById('home').addEventListener('click', () => { window.location.href = 'Dashboard.html' })
 
-        
-        @media (max-width: 360px) {
-            body {
-                padding: 12px;
-            }
+    document.getElementById('sales').addEventListener('click', () => { window.location.href = 'Sales.html' })
 
-            .info-grid {
-                gap: 8px;
-            }
+    document.getElementById('product').addEventListener('click', () => { window.location.href = 'products.html' })
 
-            .card {
-                padding: 12px;
-            }
+    document.getElementById('analytics').addEventListener('click', () => { window.location.href = 'analytics.html' })
+</script>
 
-            .card p {
-                font-size: 20px;
-            }
-        }
-
-
-        @media (min-width: 600px) {
-            .info-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-
-        @media (min-width: 1024px) {
-            .info-grid {
-                grid-template-columns: repeat(4, 1fr);
-                max-width: 1100px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            header h1 {
-                font-size: 22px;
-            }
-        }
-
-    </style>
 </html>

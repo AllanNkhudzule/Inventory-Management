@@ -1,283 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
 
-<body>
-    <div class="Dashboard">
-        <header>
-            <h1>Inventory Dashboard</h1>
-            <h2>Hello 👋</h2>
-
-        </header>
-        <div class="info-grid">
-            <div class="card">
-                <h3>TOTAL PRODUCTS</h3>
-                <p id="total-products">0</p>
-            </div>
-
-            <div class="card">
-                <h3>TODAY'S SALES</h3>
-                <p id="today-sales">MK 0</p>
-            </div>
-
-            <div class="card">
-                <h3>INVENTORY VALUE</h3>
-                <p id="inventory-value">MK 0</p>
-            </div>
-
-            <div class="card">
-                <h3>TOTAL PRODUCTS</h3>
-                <p id="total-products">0</p>
-            </div>
-
-            <div class="card">
-                <h3>PROFIT</h3>
-                <p id="total-profit">MK 0</p>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="section-box1">
-        <div class="alert-card">
-            <h3>⚠️Low stock alerts</h3>
-        </div>
-    </div>
-
-    <div class="section-box2">
-        <div class="alert-card">
-            <h3>📈High Selling products</h3>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <button class="nav-item" id="home">
-            <span class="icon">🏠</span>
-        </button>
-
-        <button class="nav-item active" id="sales">
-            <span class="icon">🛒</span>
-        </button>
-
-        <button class="nav-item " id="product">
-            <span class="icon">📦</span>
-        </button>
-
-        <button class="nav-item" id="analytics">
-            <span class="icon">📊</span>
-        </button>
-    </nav>
-
-
-</body>
-
-<style>
+  <style>
     * {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
 
     body {
-        margin: 0;
-        padding: 14px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        background-color: #ffffff;
-        color: #111;
+      margin: 0;
+      padding: 14px;
+      padding-bottom: 80px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #111;
     }
 
-    header {
-        margin-bottom: 14px;
+    /* ===== TOP NAV ===== */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
+    .user-menu {
+      position: relative;
+    }
+
+    .user-name-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 28px;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      min-width: 140px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .dropdown button {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .dropdown button:hover {
+      background: #f5f5f5;
+    }
+
+    /* ===== DASHBOARD ===== */
     header h1 {
-        font-size: 18px;
-        font-weight: 700;
-        margin: 0;
+      font-size: 18px;
+      margin: 0;
+    }
+
+    header h2 {
+      font-size: 14px;
+      margin-top: 4px;
+      font-weight: 400;
     }
 
     .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
     }
 
-
     .card {
-        background: #ffffff;
-        border: 1px solid #e6e6e6;
-        border-radius: 12px;
-        padding: 14px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 14px;
     }
 
     .card h3 {
-        margin: 0;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        color: #222;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin: 0;
     }
 
     .card p {
-        margin: 0;
-        font-size: 22px;
-        font-weight: 700;
-        line-height: 1.1;
-        color: #000;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 4px 0 0;
     }
 
-    .section-box1 {
-        background: gray;
-        border: 1px solid #e6e6e6;
-        border-radius: 1px;
-        padding: 14px;
-        min-height: 120px;
-
-        color: red;
-        display: flex;
-        align-items: flex-start;
-        /* top */
-        justify-content: flex-start;
-    }
-
+    .section-box1,
     .section-box2 {
-        background: gray;
-        border: 2px solid #e6e6e6;
-        border-radius: 1px;
-        padding: 14px;
-        min-height: 120px;
-
-        color: green;
-        display: flex;
-        align-items: flex-start;
-        /* top */
-        justify-content: flex-start;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #e6e6e6;
     }
 
-    .section-box1 h3 {
-        margin: 0;
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-
-    .section-box2 h3 {
-        margin: 0;
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-
+    /* ===== BOTTOM NAV ===== */
     .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 64px;
-
-        background: #ffffff;
-        border-top: 1px solid #e6e6e6;
-
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-
-        z-index: 100;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: #ffffff;
+      border-top: 1px solid #e6e6e6;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
 
-    /* Nav button */
     .nav-item {
-        background: none;
-        border: none;
-        outline: none;
-        cursor: pointer;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-
-        font-size: 11px;
-        color: #999;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      color: #999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Icon */
-    .nav-item .icon {
-        font-size: 20px;
-    }
-
-    /* Active state */
     .nav-item.active {
-        color: #e60000;
-        /* matches your red home icon */
+      color: #e60000;
     }
 
-    /* Prevent content from hiding behind nav */
-    body {
-        padding-bottom: 80px;
+    .icon {
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <strong>ChumaTrack</strong>
+
+    <div class="user-menu">
+      <button class="user-name-btn" id="userNameBtn">Loading...</button>
+
+      <div class="dropdown" id="userDropdown">
+        <button id="editNameBtn">Edit name</button>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <header>
+    <h1>Dashboard</h1>
+    <h2>Hello 👋</h2>
+  </header>
+
+  <div class="info-grid">
+    <div class="card">
+      <h3>Total Products</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Today's Sales</h3>
+      <p>MK 0</p>
+    </div>
+    <div class="card">
+      <h3>Inventory Value</h3>
+      <p>MK 0</p>
+    </div>
+    <div class="card">
+      <h3>Profit</h3>
+      <p>MK 0</p>
+    </div>
+  </div>
+
+  <div class="section-box1">
+    ⚠️ Low stock alerts
+  </div>
+
+  <div class="section-box2">
+    📈 High selling products
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="location.href='Dashboard.html'">
+      <span class="icon">🏠</span>
+    </button>
+    <button class="nav-item" onclick="location.href='Sales.html'">
+      <span class="icon">🛒</span>
+    </button>
+    <button class="nav-item" onclick="location.href='products.html'">
+      <span class="icon">📦</span>
+    </button>
+    <button class="nav-item" onclick="location.href='analytics.html'">
+      <span class="icon">📊</span>
+    </button>
+  </nav>
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <script>
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      'https://vvaveobusmzlughhxgcf.supabase.co',
+      'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'
+    );
+
+    const userNameBtn = document.getElementById('userNameBtn');
+    const dropdown = document.getElementById('userDropdown');
+    const editNameBtn = document.getElementById('editNameBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Toggle dropdown
+    userNameBtn.onclick = () => {
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Load user
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+
+      if (!user) {
+        location.href = 'Landing.html';
+        return;
+      }
+
+      userNameBtn.textContent = user.user_metadata.full_name || 'User';
     }
 
+    loadUser();
 
+    // Edit name
+    editNameBtn.onclick = async () => {
+      const newName = prompt('Enter your name:', userNameBtn.textContent);
+      if (!newName) return;
 
-    @media (max-width: 360px) {
-        body {
-            padding: 12px;
-        }
+      const { error } = await supabaseClient.auth.updateUser({
+        data: { full_name: newName.trim() }
+      });
 
-        .info-grid {
-            gap: 8px;
-        }
+      if (!error) {
+        userNameBtn.textContent = newName.trim();
+        dropdown.style.display = 'none';
+      }
+    };
 
-        .card {
-            padding: 12px;
-        }
+    // Logout
+    logoutBtn.onclick = async () => {
+      await supabaseClient.auth.signOut();
+      location.href = 'Landing.html';
+    };
 
-        .card p {
-            font-size: 20px;
-        }
-    }
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.user-menu')) {
+        dropdown.style.display = 'none';
+      }
+    });
+  </script>
 
-
-    @media (min-width: 600px) {
-        .info-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-
-    @media (min-width: 1024px) {
-        .info-grid {
-            grid-template-columns: repeat(4, 1fr);
-            max-width: 1100px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        header h1 {
-            font-size: 22px;
-        }
-    }
-</style>
-
-<script>
-    document.getElementById('home').addEventListener('click', () => { window.location.href = 'Dashboard.html' })
-
-    document.getElementById('sales').addEventListener('click', () => { window.location.href = 'Sales.html' })
-
-    document.getElementById('product').addEventListener('click', () => { window.location.href = 'products.html' })
-
-    document.getElementById('analytics').addEventListener('click', () => { window.location.href = 'analytics.html' })
-</script>
-
+</body>
 </html>

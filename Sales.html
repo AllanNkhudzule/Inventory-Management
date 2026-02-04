@@ -1,306 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>Sales</title>
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales</title>
 
-   <body>
-     <header>
-        <h1>Inventory Management</h1>
-        <p>Manage your shop's inventory and track sales in one place</p>
-     </header>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-     <section class="sales-container">
-      <div class="header">
-        <h2>Sales History</h2>
-        <button id="sale-record">+Record sale</button>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 20px;
+      padding-bottom: 90px;
+      color: #111;
+    }
+
+    /* Top nav / user menu */
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-name-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #111827;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      min-width: 140px;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 50;
+    }
+
+    .dropdown button {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      background: none;
+      text-align: left;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .dropdown button:hover {
+      background: #f3f4f6;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 16px;
+      color: #666;
+    }
+
+    /* Sales container */
+    .sales-container {
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: #fff;
+    }
+
+    .sales-container .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sales-container h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    #sale-record {
+      background-color: #18751b;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #sale-record:hover { background-color: #145a16; }
+
+    /* Modal */
+    .hidden { display: none !important; }
+
+    #form-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      z-index: 1000;
+      width: 90%;
+      max-width: 420px;
+    }
+
+    #form-modal h3 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #sale-form input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    #sale-form button[type="submit"] {
+      background: #18751b;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    #sale-form button[type="submit"]:hover {
+      background: #145a16;
+    }
+
+    #cancel-btn {
+      background: #f3f4f6;
+      color: #333;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .records-table th {
+      text-align: left;
+      color: #555;
+      font-weight: 600;
+      padding: 12px 8px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .records-table td {
+      padding: 12px 8px;
+      color: #111;
+    }
+
+    .records-table tbody tr:nth-child(even) {
+      background-color: #f9f9fb;
+    }
+
+    .records-table td:last-child {
+      font-weight: 700;
+      text-align: right;
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: #ffffff;
+      border-top: 1px solid #e6e6e6;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-item {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #999;
+    }
+
+    .nav-item .icon {
+      font-size: 20px;
+    }
+
+    .nav-item.active {
+      color: #18751b;
+    }
+
+    body { padding-bottom: 90px; }
+  </style>
+</head>
+
+<body>
+  <!-- Top user menu -->
+  <nav class="top-nav">
+    <div class="user-menu">
+      <button id="userNameBtn" class="user-name-btn">Loading...</button>
+      <div id="userDropdown" class="dropdown">
+        <button id="editNameBtn">Edit name</button>
+        <button id="logoutBtn">Logout</button>
       </div>
+    </div>
+  </nav>
 
-      <div id="form-modal" class="hidden">
-         <h3>Add Sale</h3>
-         <form id="sale-form">
-          <input type="text" id="product" placeholder="Product Name" required>
-          <input type="text" id="unit-price" placeholder="Unit Price" required>
-          <input type="text" id="quantity" placeholder="Quantity" required>
-          <button type="submit">Add to Table</button>
-          <button type="button" id="cancel-btn">Cancel</button>
+  <header>
+    <h1>Inventory Management</h1>
+    <p>Manage your shop's inventory and track sales in one place</p>
+  </header>
 
-         </form>
-      </div>
+  <section class="sales-container">
+    <div class="header">
+      <h2>Sales History</h2>
+      <button id="sale-record">+ Record sale</button>
+    </div>
 
-      <div class="table-container">
-        <table class="records-table">
-            <thead>
-                <tr>
-                    <th>Date and time</th>
-                    <th>Product</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="body">
+    <!-- Modal -->
+    <div id="form-modal" class="hidden">
+      <h3>Add Sale</h3>
+      <form id="sale-form">
+        <input type="text" id="product" placeholder="Product Name" required>
+        <input type="number" id="unit-price" placeholder="Unit Price" required min="0" step="0.01">
+        <input type="number" id="quantity" placeholder="Quantity" required min="1">
+        <button type="submit">Add to Table</button>
+        <button type="button" id="cancel-btn">Cancel</button>
+      </form>
+    </div>
 
-            </tbody>
-        </table>
-      </div>
-     </section>
+    <div class="table-container">
+      <table class="records-table">
+        <thead>
+          <tr>
+            <th>Date and time</th>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="body">
+          <!-- Sales rows will be added here -->
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-      <nav class="bottom-nav">
-            <button class="nav-item" id="home">
-                <span class="icon">🏠</span>
-            </button>
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <button class="nav-item" id="home">
+      <span class="icon">🏠</span>
+    </button>
+    <button class="nav-item active" id="sales">
+      <span class="icon">🛒</span>
+    </button>
+    <button class="nav-item" id="invento">
+      <span class="icon">📦</span>
+    </button>
+    <button class="nav-item" id="analytics">
+      <span class="icon">📊</span>
+    </button>
+  </nav>
 
-            <button class="nav-item active" id="sales">
-                <span class="icon">🛒</span>
-            </button>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-            <button class="nav-item " id="invento">
-                <span class="icon">📦</span>
-            </button>
-            
-            <button class="nav-item" id="analytics">
-                <span class="icon">📊</span>
-            </button>
+  <script>
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      'https://vvaveobusmzlughhxgcf.supabase.co',
+      'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl' 
+    );
 
-   </body>
+    const userNameBtn = document.getElementById('userNameBtn');
+    const dropdown = document.getElementById('userDropdown');
+    const editNameBtn = document.getElementById('editNameBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-</html>
+    userNameBtn.onclick = () => {
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    };
 
-<script>
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) return location.href = 'Landing.html';
+      userNameBtn.textContent = (user.user_metadata.full_name || 'User') + ' ▾';
+    }
+
+    loadUser();
+
+    editNameBtn.onclick = async () => {
+      const newName = prompt('Enter your name:', userNameBtn.textContent.replace(' ▾', ''));
+      if (!newName) return;
+
+      const { error } = await supabaseClient.auth.updateUser({
+        data: { full_name: newName.trim() }
+      });
+
+      if (!error) {
+        userNameBtn.textContent = newName.trim() + ' ▾';
+        dropdown.style.display = 'none';
+      }
+    };
+
+    logoutBtn.onclick = async () => {
+      await supabaseClient.auth.signOut();
+      location.href = 'Landing.html';
+    };
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.user-menu')) dropdown.style.display = 'none';
+    });
+
     const addBtn = document.getElementById('sale-record');
     const formModal = document.getElementById('form-modal');
     const cancelBtn = document.getElementById('cancel-btn');
     const form = document.getElementById('sale-form');
     const tableBody = document.getElementById('body');
 
-    addBtn.addEventListener('click', function(){
-        formModal.classList.remove('hidden');
+    addBtn.addEventListener('click', () => formModal.classList.remove('hidden'));
+    cancelBtn.addEventListener('click', () => formModal.classList.add('hidden'));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const product = document.getElementById('product').value.trim();
+      const unitPrice = parseFloat(document.getElementById('unit-price').value);
+      const quantity = parseInt(document.getElementById('quantity').value);
+
+      if (!product || isNaN(unitPrice) || isNaN(quantity)) {
+        alert('Please fill all fields correctly');
+        return;
+      }
+
+      const total = (unitPrice * quantity).toFixed(2);
+      const date = new Date().toLocaleString();
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${date}</td>
+        <td>${product}</td>
+        <td>${unitPrice.toFixed(2)}</td>
+        <td>${quantity}</td>
+        <td>${total}</td>
+      `;
+      tableBody.appendChild(row);
+
+      form.reset();
+      formModal.classList.add('hidden');
     });
 
-     cancelBtn.addEventListener('click', function() {
-            formModal.classList.add('hidden');  // Hide form
-    });
-
-    document.getElementById('home').addEventListener('click', () => 
-  {window.location.href = 'Dashboard.html'})
-
-  document.getElementById('sales').addEventListener('click', () => 
-  {window.location.href = 'Sales.html'})
-
-  document.getElementById('invento').addEventListener('click', () => 
-  {window.location.href = 'products.html'})
-
-  document.getElementById('analytics').addEventListener('click', () => 
-  {window.location.href = 'analytics.html'})
-
-    form.addEventListener('submit', function(e) {
-            e.preventDefault();  // Stop page refresh
-            
-            // Get values from form
-            const product = document.getElementById('product').value;
-            const price = document.getElementById('unit-price').value;
-            const quantity = document.getElementById('quantity').value;
-            
-            // Calculate total
-            const total = price * quantity;
-            
-            // Get current date/time
-            const now = new Date().toLocaleString();
-            
-            // Create new table row
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${now}</td>
-                <td>${product}</td>
-                <td>${price}</td>
-                <td>${quantity}</td>
-                <td>${total}</td>
-            `;
-            
-            // Add row to table
-            tableBody.appendChild(newRow);
-            
-            // Clear form inputs
-            form.reset();
-            
-            // Hide form
-            formModal.classList.add('hidden');
-    });        
-        
-
-
-</script>
-
-<style>
-    
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background-color: #ffffff;
-        color: #000;
-        padding: 20px;
-        padding-bottom: 100px; /* Space for bottom nav */
-    }
-
-    header {
-        margin-top: 20px;
-        margin-bottom: 40px;
-    }
-
-    header h1 {
-        font-size: 28px;
-        font-weight: 800;
-        margin-bottom: 8px;
-    }
-
-    header p {
-        font-size: 16px;
-        color: #111;
-        line-height: 1.4;
-        max-width: 300px;
-    }
-
-    .sales-container {
-        border: 1px solid #f0f0f0;
-        border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        background: #fff;
-    }
-
-    .sales-container .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .sales-container h2 {
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    #sale-record {
-        background-color: #0a0a0f;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .table-container {
-        overflow-x: auto;
-    }
-
-    .records-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-    }
-
-    .records-table th {
-        text-align: left;
-        color: #555;
-        font-weight: 600;
-        padding: 12px 8px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .records-table td {
-        padding: 12px 8px;
-        color: #111;
-    }
-
-    .records-table tbody tr:nth-child(even) {
-        background-color: #f9f9fb;
-    }
-
-    .records-table td:last-child {
-        font-weight: 800; 
-        text-align: right;
-    }
-
-    .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 64px;
-
-            background: #ffffff;
-            border-top: 1px solid #e6e6e6;
-
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-
-            z-index: 100;
-        }
-
-        /* Nav button */
-        .nav-item {
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-
-            font-size: 11px;
-            color: #999;
-        }
-
-        
-        .nav-item .icon {
-            font-size: 20px;
-        }
-
-        .nav-item.active {
-            color: #e60000; /* matches your red home icon */
-        }
-    
-        body {
-            padding-bottom: 80px;
-        }
-
-
-
-    
-
-    .hidden { display: none; }
-    #form-modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        z-index: 1000;
-        width: 90%;
-        max-width: 400px;
-    }
-
-    #form-modal input {
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-</style>
-</style>
+    document.getElementById('home').addEventListener('click', () => location.href = 'Dashboard.html');
+    document.getElementById('sales').addEventListener('click', () => location.href = 'Sales.html');
+    document.getElementById('invento').addEventListener('click', () => location.href = 'products.html');
+    document.getElementById('analytics').addEventListener('click', () => location.href = 'analytics.html');
+  </script>
+</body>
+</html>

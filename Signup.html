@@ -1,15 +1,36 @@
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inventory</title>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
 
     <script>
-    function togglePassword(inputId, icon) {
-        const input = document.getElementById(inputId);
+      window.alert = function (message) {
+          const overlay = document.createElement('div');
+          overlay.className = 'custom-alert-overlay';
 
+          overlay.innerHTML = `
+            <div class="custom-alert">
+                <i class="fa-solid fa-circle-check"></i>
+                <p>${message}</p>
+                <button>OK</button>
+            </div>
+          `;
+
+          overlay.querySelector('button').onclick = () => {
+              document.body.removeChild(overlay);
+          };
+
+          document.body.appendChild(overlay);
+      };
+    </script>
+
+    <script>
+      function togglePassword(inputId, icon) {
+        const input = document.getElementById(inputId);
         if (input.type === "password") {
             input.type = "text";
             icon.classList.remove("fa-eye");
@@ -19,34 +40,12 @@
             icon.classList.remove("fa-eye-slash");
             icon.classList.add("fa-eye");
         }
-    }
+      }
 
-    function validatePassword(){
-        const password = document.getElementById("passwordInput").value;  
-        const confirmPassword = document.getElementById("confirmPassword").value;
-        const errorMsg = document.getElementById('errorMessage');
-
-        if (password === '' || confirmPassword === '') {
-            errorMsg.style.display = 'block';
-            errorMsg.textContent = 'Please fill in both password fields!';
-            return false;
-        } else if (password !== confirmPassword) {
-            errorMsg.style.display = 'block';
-            errorMsg.textContent = 'Passwords do not match!';
-            return false;
-        } else {
-            errorMsg.style.display = 'none';
-            alert('Account created successfully!');
-            return true;
-        }
-    }
-
-    // Optional: Real-time validation
-    function checkPasswordMatch() {
+      function checkPasswordMatch() {
         const password = document.getElementById('passwordInput').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         const errorMsg = document.getElementById('errorMessage');
-
         if (confirmPassword === '') {
             errorMsg.style.display = 'none';
         } else if (password !== confirmPassword) {
@@ -55,184 +54,258 @@
         } else {
             errorMsg.style.display = 'none';
         }
-    }
-</script>
+      }
+    </script>
 
+    <style>
+        h1{ text-align: center; }
+        h2{ text-align: center; }
+        p { text-align: center; }
 
-        <style>
-            h1{
-                text-align: center;
-            }
+        #password { text-align: left; margin-left: 5px; }
+        .business  { text-align: left; margin-left: 5px; }
+        #firstname { text-align: left; margin-left: 5px; }
+        #lastname  { text-align: left; margin-left: 5px; }
+        #email     { text-align: left; margin-left: 5px; }
 
-            h2{
-                text-align: center;
-            }
+        body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          margin: 0;
+          padding: 20px;
+          box-sizing: border-box;
+        }
 
-            p{
-                text-align: center;
-            }
+        input, button {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
 
-            #password{
-                text-align: left;
-                margin-left: 5px;
-            }
+        .signup {
+           width: 100%;
+           max-width: 400px;
+           text-align: center;
+        }
 
-            .business{
-                text-align: left;
-                margin-left: 5px;
-            }
+        #continue {
+            background-color: #18751b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-           #name{
-                text-align: left;
-                margin-left: 5px;
-            }
+        #continue:hover { background-color: #145a16; }
 
-            #email{
-                text-align: left;
-                margin-left: 5px;
-            }
+        #continue:disabled {
+            background-color: #6aad6c;
+            cursor: not-allowed;
+        }
 
-            body {
-              font-family: Arial, sans-serif;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center; 
-              min-height: 100vh;       
-              margin: 0;
-              padding: 20px;
-              box-sizing: border-box;
-           }
+        .password-wrapper { position: relative; width: 100%; }
+        .password-wrapper input { padding-right: 45px; }
 
-            .separator {
-              display: flex;
-              align-items: center;
-              text-align: center;
-              color: #888;
-              font-size: 14px;
-              margin: 20px 0;
-           }
-             
-            .separator::before, .separator::after {
-                content: "";
-                flex: 1;
-                border-bottom: 1px solid #eee;
-            }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+            color: #666;
+        }
+        .toggle-password:hover { color: #000; }
 
-           .separator:not(:empty)::before { margin-right: 10px; }
-           .separator:not(:empty)::after { margin-left: 10px; }
+        .error-message {
+            display: none;
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+            text-align: left;
+            border-left: 4px solid #d32f2f;
+        }
 
-            input, button {
-                width: 100%;
-                padding: 16px;
-                font-size: 16px;
-                margin: 8px 0;
-                border-radius: 10px; 
-                border: 1px solid #ddd;
-                box-sizing: border-box;
-            }
+        /* 🔹 Custom Alert Styles */
+        .custom-alert-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
 
-            .signup {
-               width: 100%;          
-               max-width: 400px;    
-               text-align:center;    
-            }
+        .custom-alert {
+            background: #fff;
+            width: 90%;
+            max-width: 360px;
+            padding: 25px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: scaleIn 0.25s ease;
+        }
 
-            #continue{
-                background-color: #18751b;
-                color: white;
-                border: none;
-                cursor: pointer;
-            }
-             
-            #continue:hover {  
-                background-color: #145a16; 
-            }
+        .custom-alert i {
+            font-size: 42px;
+            color: #18751b;
+            margin-bottom: 12px;
+        }
 
-            .password-wrapper {
-                position: relative;
-                width: 100%;
-            }
+        .custom-alert p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-            .password-wrapper input {
-                padding-right: 45px;   
-            }
+        .custom-alert button {
+            background: #18751b;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
 
-            .toggle-password {
-                position: absolute;
-                top: 50%;
-                right: 15px;
-                transform: translateY(-50%);
-                cursor: pointer;
-                font-size: 18px;
-                user-select: none;
-                color: #666;
-            }
+        .custom-alert button:hover {
+            background: #145a16;
+        }
 
-            .toggle-password:hover {
-                color: #000;
-            }
-            
-            .error-message {
-                display: none;
-                color: #d32f2f;
-                background-color: #ffebee;
-                padding: 10px;
-                border-radius: 5px;
-                margin: 10px 0;
-                font-size: 14px;
-                text-align: left;
-                border-left: 4px solid #d32f2f;
-            }
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
 
+<body>
+    <h1>ChumaTrack</h1>
 
-            @media screen {
-                body {
-                    padding-top: 20px;
-                }
-                
-                h1 {
-                    font-size: 1.5rem;
-                }
-                            
-            }
+    <div class="signup">
+        <h2>Sign Up</h2>
+        <p>Create your account by filling in the information below</p>
 
-        </style>
-    </head>
+        <p id="firstname">First Name</p>
+        <input type="text" placeholder="Enter first name">
 
-    <body>
-        <h1>INVENTORY MANAGEMENT</h1>
+        <p id="lastname">Last Name</p>
+        <input type="text" placeholder="Enter last name">
 
-        <div class="signup">
-            <h2>Sign Up</h2>
-            <p>Create your account by filling in the information below</p>
-            <p id ="name">First Name</p>
-            <input type="text" placeholder="Enter first name">
-            <p id="name">Last Name</p>
-            <input type="text" placeholder="Enter last name">
-            <p class="business">Business name</p>
-            <input type="text" placeholder="Enter Business Name">
-            <p class="business">Phone Number</p>
-            <input type="tel" placeholder="Phone Number">  <!-- Changed to type="tel" -->
-            <p id="email">Email</p>
-            <input type="email" placeholder="email@domain.com">
+        <p class="business">Business name</p>
+        <input type="text" placeholder="Enter Business Name">
 
-           <p id="password">Password</p>
-            <div class="password-wrapper">
-                    <input type="password" id="passwordInput" placeholder="Enter your Password" oninput="checkPasswordMatch()">
-                    <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('passwordInput', this)"></i>
-            </div>
+        <p class="business">Phone Number</p>
+        <input type="tel" placeholder="Phone Number">
 
-            <div class="password-wrapper">
-                    <input type="password" id="confirmPassword" placeholder="Confirm Password" oninput="checkPasswordMatch()">
-                    <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
-            </div>
+        <p id="email">Email</p>
+        <input type="email" placeholder="email@domain.com">
 
-             <div id="errorMessage" class="error-message"></div>
-
-            <button id="continue" onclick="validatePassword()">Sign Up</button>
-
-            <p>Already have an Account? <a href="Landing.html">Log in</a></p>
+        <p id="password">Password</p>
+        <div class="password-wrapper">
+            <input type="password" id="passwordInput" placeholder="Enter your Password" oninput="checkPasswordMatch()">
+            <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('passwordInput', this)"></i>
         </div>
-    </body>
+
+        <div class="password-wrapper">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" oninput="checkPasswordMatch()">
+            <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <button id="continue" onclick="handleSignup()">Sign Up</button>
+
+        <p>Already have an Account? <a href="Landing.html">Log in</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+    <script>
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://vvaveobusmzlughhxgcf.supabase.co',
+            'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'
+        );
+
+        async function handleSignup() {
+            const errorMsg = document.getElementById('errorMessage');
+            const btn = document.getElementById('continue');
+
+            const firstName = document.querySelector('input[placeholder="Enter first name"]').value.trim();
+            const lastName = document.querySelector('input[placeholder="Enter last name"]').value.trim();
+            const businessName = document.querySelector('input[placeholder="Enter Business Name"]').value.trim();
+            const phoneNumber = document.querySelector('input[placeholder="Phone Number"]').value.trim();
+            const email = document.querySelector('input[type="email"]').value.trim();
+            const password = document.getElementById('passwordInput').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!firstName || !lastName || !businessName || !phoneNumber || !email || !password || !confirmPassword) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Please fill in all fields';
+                return;
+            }
+
+            if (password.length < 8) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Password must be at least 8 characters long';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Passwords do not match!';
+                return;
+            }
+
+            errorMsg.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Signing up...';
+
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: `${firstName} ${lastName}`.trim(),
+                            business_name: businessName,
+                            phone: phoneNumber
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                if (data.user) {
+                    if (data.session) {
+                        alert('Account created! You are now signed in.');
+                        window.location.href = 'Dashboard.html';
+                    } else {
+                        alert('Account created! Please check your email and click the confirmation link.');
+                    }
+                }
+
+            } catch (err) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = err.message || 'Signup failed – please try again';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Sign Up';
+            }
+        }
+    </script>
+</body>
 </html>

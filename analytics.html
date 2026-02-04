@@ -153,12 +153,74 @@
         border-radius: 3px;
         margin-top: 2px;
       }
+
+       /* ===== TOP NAV ===== */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-name-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 28px;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      min-width: 140px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .dropdown button {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .dropdown button:hover {
+      background: #f5f5f5;
+    }
+
     </style>
   </head>
 
   <body>
     <div class="container">
       <h1>Analytics & Reporting</h1>
+
+      <nav class="top-nav">
+    <strong>ChumaTrack</strong>
+
+    <div class="user-menu">
+      <button class="user-name-btn" id="userNameBtn">Loading...</button>
+
+      <div class="dropdown" id="userDropdown">
+        <button id="editNameBtn">Edit name</button>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+   </nav>
+
 
       <div class="lowstock-card">
         <div>
@@ -396,5 +458,72 @@
         window.location.href = "analytics.html";
       });
     </script>
+
+    
+
+
+     <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <script>
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      'https://vvaveobusmzlughhxgcf.supabase.co',
+      'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'
+    );
+
+    const userNameBtn = document.getElementById('userNameBtn');
+    const dropdown = document.getElementById('userDropdown');
+    const editNameBtn = document.getElementById('editNameBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Toggle dropdown
+    userNameBtn.onclick = () => {
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Load user
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+
+      if (!user) {
+        location.href = 'Landing.html';
+        return;
+      }
+
+      userNameBtn.textContent = user.user_metadata.full_name || 'User';
+    }
+
+    loadUser();
+
+    // Edit name
+    editNameBtn.onclick = async () => {
+      const newName = prompt('Enter your name:', userNameBtn.textContent);
+      if (!newName) return;
+
+      const { error } = await supabaseClient.auth.updateUser({
+        data: { full_name: newName.trim() }
+      });
+
+      if (!error) {
+        userNameBtn.textContent = newName.trim();
+        dropdown.style.display = 'none';
+      }
+    };
+
+    // Logout
+    logoutBtn.onclick = async () => {
+      await supabaseClient.auth.signOut();
+      location.href = 'Landing.html';
+    };
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.user-menu')) {
+        dropdown.style.display = 'none';
+      }
+    });
+  </script>
+
   </body>
 </html>

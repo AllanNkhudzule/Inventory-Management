@@ -1,18 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory</title>
+    <title>Inventory - Sign Up</title>
 
     <script>
-      window.alert = function (message) {
-          const overlay = document.createElement('div');
-          overlay.className = 'custom-alert-overlay';
+        window.alert = function (message) {
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
 
-          overlay.innerHTML = `
+            overlay.innerHTML = `
             <div class="custom-alert">
                 <i class="fa-solid fa-circle-check"></i>
                 <p>${message}</p>
@@ -20,67 +20,95 @@
             </div>
           `;
 
-          overlay.querySelector('button').onclick = () => {
-              document.body.removeChild(overlay);
-          };
+            overlay.querySelector('button').onclick = () => {
+                document.body.removeChild(overlay);
+            };
 
-          document.body.appendChild(overlay);
-      };
+            document.body.appendChild(overlay);
+        };
     </script>
 
     <script>
-      function togglePassword(inputId, icon) {
-        const input = document.getElementById(inputId);
-        if (input.type === "password") {
-            input.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            input.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         }
-      }
 
-      function checkPasswordMatch() {
-        const password = document.getElementById('passwordInput').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const errorMsg = document.getElementById('errorMessage');
-        if (confirmPassword === '') {
-            errorMsg.style.display = 'none';
-        } else if (password !== confirmPassword) {
-            errorMsg.style.display = 'block';
-            errorMsg.textContent = 'Passwords do not match!';
-        } else {
-            errorMsg.style.display = 'none';
+        function checkPasswordMatch() {
+            const password = document.getElementById('passwordInput').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMsg = document.getElementById('errorMessage');
+            if (confirmPassword === '') {
+                errorMsg.style.display = 'none';
+            } else if (password !== confirmPassword) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Passwords do not match!';
+            } else {
+                errorMsg.style.display = 'none';
+            }
         }
-      }
     </script>
 
     <style>
-        h1{ text-align: center; }
-        h2{ text-align: center; }
-        p { text-align: center; }
-
-        #password { text-align: left; margin-left: 5px; }
-        .business  { text-align: left; margin-left: 5px; }
-        #firstname { text-align: left; margin-left: 5px; }
-        #lastname  { text-align: left; margin-left: 5px; }
-        #email     { text-align: left; margin-left: 5px; }
-
-        body {
-          font-family: Arial, sans-serif;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          min-height: 100vh;
-          margin: 0;
-          padding: 20px;
-          box-sizing: border-box;
+        h1 {
+            text-align: center;
         }
 
-        input, button {
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        #password {
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        .business {
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        #firstname {
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        #lastname {
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        #email {
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        input,
+        button {
             width: 100%;
             padding: 16px;
             font-size: 16px;
@@ -91,9 +119,9 @@
         }
 
         .signup {
-           width: 100%;
-           max-width: 400px;
-           text-align: center;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
 
         #continue {
@@ -103,15 +131,23 @@
             cursor: pointer;
         }
 
-        #continue:hover { background-color: #145a16; }
+        #continue:hover {
+            background-color: #145a16;
+        }
 
         #continue:disabled {
             background-color: #6aad6c;
             cursor: not-allowed;
         }
 
-        .password-wrapper { position: relative; width: 100%; }
-        .password-wrapper input { padding-right: 45px; }
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 45px;
+        }
 
         .toggle-password {
             position: absolute;
@@ -123,7 +159,10 @@
             user-select: none;
             color: #666;
         }
-        .toggle-password:hover { color: #000; }
+
+        .toggle-password:hover {
+            color: #000;
+        }
 
         .error-message {
             display: none;
@@ -137,11 +176,11 @@
             border-left: 4px solid #d32f2f;
         }
 
-        /* 🔹 Custom Alert Styles */
+        /* Custom Alert Styles */
         .custom-alert-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.45);
+            background: rgba(0, 0, 0, 0.45);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -155,7 +194,7 @@
             padding: 25px;
             border-radius: 14px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
             animation: scaleIn 0.25s ease;
         }
 
@@ -185,8 +224,15 @@
         }
 
         @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -199,19 +245,19 @@
         <p>Create your account by filling in the information below</p>
 
         <p id="firstname">First Name</p>
-        <input type="text" placeholder="Enter first name">
+        <input type="text" id="firstNameInput" placeholder="Enter first name">
 
         <p id="lastname">Last Name</p>
-        <input type="text" placeholder="Enter last name">
+        <input type="text" id="lastNameInput" placeholder="Enter last name">
 
         <p class="business">Business name</p>
-        <input type="text" placeholder="Enter Business Name">
+        <input type="text" id="businessNameInput" placeholder="Enter Business Name">
 
         <p class="business">Phone Number</p>
-        <input type="tel" placeholder="Phone Number">
+        <input type="tel" id="phoneNumberInput" placeholder="Phone Number">
 
         <p id="email">Email</p>
-        <input type="email" placeholder="email@domain.com">
+        <input type="email" id="emailInput" placeholder="email@domain.com">
 
         <p id="password">Password</p>
         <div class="password-wrapper">
@@ -235,20 +281,23 @@
 
     <script>
         const { createClient } = supabase;
+
+        // FIXED: Use your actual Supabase anon key
         const supabaseClient = createClient(
             'https://vvaveobusmzlughhxgcf.supabase.co',
-            'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2YXZlb2J1c216bHVnaGh4Z2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0OTg3MDcsImV4cCI6MjA4NDA3NDcwN30.25zYCjVAeQIkhD3n81jjZ6M5P2b-yUp-ZL4Y3hvlZV4'
         );
 
         async function handleSignup() {
             const errorMsg = document.getElementById('errorMessage');
             const btn = document.getElementById('continue');
 
-            const firstName = document.querySelector('input[placeholder="Enter first name"]').value.trim();
-            const lastName = document.querySelector('input[placeholder="Enter last name"]').value.trim();
-            const businessName = document.querySelector('input[placeholder="Enter Business Name"]').value.trim();
-            const phoneNumber = document.querySelector('input[placeholder="Phone Number"]').value.trim();
-            const email = document.querySelector('input[type="email"]').value.trim();
+            // FIXED: Use proper input IDs for selection
+            const firstName = document.getElementById('firstNameInput').value.trim();
+            const lastName = document.getElementById('lastNameInput').value.trim();
+            const businessName = document.getElementById('businessNameInput').value.trim();
+            const phoneNumber = document.getElementById('phoneNumberInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -270,6 +319,14 @@
                 return;
             }
 
+            // ADDED: Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Please enter a valid email address';
+                return;
+            }
+
             errorMsg.style.display = 'none';
             btn.disabled = true;
             btn.textContent = 'Signing up...';
@@ -278,13 +335,11 @@
                 const { data, error } = await supabaseClient.auth.signUp({
                     email: email,
                     password: password,
-                    options: {
-                        data: {
-                            full_name: `${firstName} ${lastName}`.trim(),
-                            business_name: businessName,
-                            phone: phoneNumber
-                        }
-                    }
+                    full_name: `${firstName} ${lastName}`.trim(),
+                    business_name: businessName,
+                    phone: phoneNumber
+
+
                 });
 
                 if (error) throw error;
@@ -295,17 +350,30 @@
                         window.location.href = 'Dashboard.html';
                     } else {
                         alert('Account created! Please check your email and click the confirmation link.');
+                        // FIXED: Redirect to login after email confirmation message
+                        setTimeout(() => {
+                            window.location.href = 'Landing.html';
+                        }, 3000);
                     }
                 }
 
             } catch (err) {
                 errorMsg.style.display = 'block';
-                errorMsg.textContent = err.message || 'Signup failed – please try again';
+                errorMsg.textContent = err.message || 'Signup failed - please try again';
+                console.error('Signup error:', err);
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Sign Up';
             }
         }
+
+        // ADDED: Allow Enter key to submit form
+        document.getElementById('confirmPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleSignup();
+            }
+        });
     </script>
 </body>
+
 </html>

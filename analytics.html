@@ -13,8 +13,7 @@
       }
 
       body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: #f5f7fa;
         padding: 20px;
         padding-bottom: 80px;
@@ -41,6 +40,27 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
 
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #718096;
+      }
+
+      .spinner {
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #3182ce;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
       .lowstock-card {
         display: flex;
         align-items: flex-start;
@@ -50,6 +70,11 @@
         padding: 16px;
         border-radius: 8px;
         margin-bottom: 20px;
+      }
+
+      .lowstock-card.no-alerts {
+        background: #f0fff4;
+        border-left-color: #48bb78;
       }
 
       .lowstock-header {
@@ -64,15 +89,27 @@
         font-size: 18px;
       }
 
+      .lowstock-card.no-alerts .warning-icon {
+        color: #48bb78;
+      }
+
       .lowstock-title {
         color: #c53030;
         font-weight: 600;
         font-size: 14px;
       }
 
+      .lowstock-card.no-alerts .lowstock-title {
+        color: #22543d;
+      }
+
       .lowstock-items {
         font-size: 13px;
         color: #742a2a;
+      }
+
+      .lowstock-card.no-alerts .lowstock-items {
+        color: #22543d;
       }
 
       .lowstock-item {
@@ -103,104 +140,49 @@
         width: 100%;
       }
 
-          .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 64px;
-
-      background: #ffffff;
-      border-top: 1px solid #e6e6e6;
-
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      z-index: 100;
-    }
-
-    /* Nav button */
-    .nav-item {
-      background: none;
-      border: none;
-      outline: none;
-      cursor: pointer;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-
-      font-size: 11px;
-      color: #999;
-    }
-
-
-    .nav-item .icon {
-      font-size: 20px;
-    }
-
-    .nav-item.active {
-      color: #e60000;
-      /* matches your red home icon */
-    }
-
-      .active-indicator {
-        width: 40px;
-        height: 3px;
-        background: #000;
-        border-radius: 3px;
-        margin-top: 2px;
+      .error-message {
+        background: #fed7d7;
+        color: #742a2a;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border-left: 4px solid #fc8181;
       }
 
-       /* ===== TOP NAV ===== */
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 64px;
+        background: #ffffff;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 100;
+      }
 
-    .user-menu {
-      position: relative;
-    }
+      .nav-item {
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        color: #999;
+      }
 
-    .user-name-btn {
-      background: none;
-      border: none;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+      .nav-item .icon {
+        font-size: 20px;
+      }
 
-    .dropdown {
-      position: absolute;
-      top: 28px;
-      right: 0;
-      background: #fff;
-      border: 1px solid #e6e6e6;
-      border-radius: 8px;
-      min-width: 140px;
-      display: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      z-index: 10;
-    }
-
-    .dropdown button {
-      width: 100%;
-      padding: 10px;
-      background: none;
-      border: none;
-      text-align: left;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .dropdown button:hover {
-      background: #f5f5f5;
-    }
-
+      .nav-item.active {
+        color: #e60000;
+      }
     </style>
   </head>
 
@@ -208,322 +190,368 @@
     <div class="container">
       <h1>Analytics & Reporting</h1>
 
-      <nav class="top-nav">
-    <strong>ChumaTrack</strong>
+      <!-- Error Message -->
+      <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-    <div class="user-menu">
-      <button class="user-name-btn" id="userNameBtn">Loading...</button>
-
-      <div class="dropdown" id="userDropdown">
-        <button id="editNameBtn">Edit name</button>
-        <button id="logoutBtn">Logout</button>
-      </div>
-    </div>
-   </nav>
-
-
-      <div class="lowstock-card">
+      <!-- Low Stock Alert -->
+      <div id="lowStockCard" class="lowstock-card">
         <div>
           <div class="lowstock-header">
-            <span class="warning-icon">⚠️</span>
-            <span class="lowstock-title">Low Stock Alert</span>
+            <span class="warning-icon" id="alertIcon">⚠️</span>
+            <span class="lowstock-title" id="alertTitle">Loading...</span>
           </div>
-          <div class="lowstock-items">
-            <div class="lowstock-item">Maize</div>
-            <div class="lowstock-item">Milk</div>
+          <div class="lowstock-items" id="lowstockItems">
+            <div class="loading">
+              <div class="spinner"></div>
+              Loading low stock items...
+            </div>
           </div>
-        </div>
-        <div>
-          <a href="#" class="lowstock-link">x 2 items(low)</a>
         </div>
       </div>
 
+      <!-- Daily Sales Chart -->
       <div class="card">
         <h2>Sales Trend (Last 7 Days)</h2>
-        <div class="chart-container">
+        <div id="linechartLoading" class="loading">
+          <div class="spinner"></div>
+          Loading sales data...
+        </div>
+        <div class="chart-container" id="lineChartContainer" style="display: none;">
           <canvas id="lineChart" width="700" height="400"></canvas>
         </div>
       </div>
 
+      <!-- Top Products Chart -->
       <div class="card">
         <h2>Top Selling Products</h2>
-        <div class="chart-container">
+        <div id="barchartLoading" class="loading">
+          <div class="spinner"></div>
+          Loading product data...
+        </div>
+        <div class="chart-container" id="barChartContainer" style="display: none;">
           <canvas id="barChart" width="700" height="400"></canvas>
         </div>
       </div>
     </div>
+
     <nav class="bottom-nav">
       <button class="nav-item" id="home">
         <span class="icon">🏠</span>
       </button>
-
-      <button class="nav-item active" id="sales">
+      <button class="nav-item" id="sales">
         <span class="icon">🛒</span>
       </button>
-
       <button class="nav-item" id="product">
         <span class="icon">📦</span>
       </button>
-
-      <button class="nav-item" id="analytics">
+      <button class="nav-item active" id="analytics">
         <span class="icon">📊</span>
       </button>
     </nav>
 
     <script>
-      // Data for line chart - exponential growth over 7 days
-      const salesData = [0, 0, 3000, 10000, 20000, 40000, 65000];
-      const days = [
-        "Dec 22",
-        "Dec 23",
-        "Dec 24",
-        "Dec 25",
-        "Dec 26",
-        "Dec 27",
-        "Dec 28",
-      ];
+      const API_URL = 'http://localhost:3000/Inventory-Management/analytics';
 
-      // Data for bar chart
-      const topProducts = [
-        { name: "Yeast", value: 220000 },
-        { name: "Milk", value: 35000 },
-        { name: "Flour", value: 15000 },
-        { name: "Sugar", value: 10000 },
-      ];
+        // FETCH DATA FROM BACKEND
+      
+      async function fetchAnalyticsData() {
+        try {
+          const response = await fetch(`${API_URL}/summary`);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
 
-      // LINE CHART
-      const lineCanvas = document.getElementById("lineChart");
-      const lineCtx = lineCanvas.getContext("2d");
+          const data = await response.json();
+          
+          console.log('Analytics data:', data);
 
-      const padding = 60;
-      const chartWidth = lineCanvas.width - padding * 2;
-      const chartHeight = lineCanvas.height - padding * 2;
+          // Process low stock products
+          displayLowStockAlert(data.lowStock);
 
-      const maxSalesValue = Math.max(...salesData);
-      const stepX = chartWidth / (salesData.length - 1);
+          // Process daily sales data
+          if (data.dailySales && data.dailySales.length > 0) {
+            displayDailySalesChart(data.dailySales);
+          } else {
+            document.getElementById('linechartLoading').innerHTML = 
+              '<p style="color: #718096;">No sales data available yet</p>';
+          }
 
-      // Draw grid lines and Y-axis labels
-      lineCtx.strokeStyle = "#e2e8f0";
-      lineCtx.lineWidth = 1;
-      lineCtx.fillStyle = "#718096";
-      lineCtx.font = "12px Arial";
-      lineCtx.textAlign = "right";
-      lineCtx.textBaseline = "middle";
+          // Process top products
+          if (data.topProducts && data.topProducts.length > 0) {
+            displayTopProductsChart(data.topProducts);
+          } else {
+            document.getElementById('barchartLoading').innerHTML = 
+              '<p style="color: #718096;">No product data available yet</p>';
+          }
 
-      const yTicks = 5;
-      for (let i = 0; i <= yTicks; i++) {
-        const value = (maxSalesValue / yTicks) * i;
-        const y =
-          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
+        } catch (error) {
+          console.error('Error fetching analytics:', error);
+          document.getElementById('errorMessage').textContent = 
+            'Error loading analytics data: ' + error.message;
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      }
 
-        // Grid line
+      // DISPLAY LOW STOCK ALERT
+      
+      function displayLowStockAlert(lowStockProducts) {
+        const card = document.getElementById('lowStockCard');
+        const itemsContainer = document.getElementById('lowstockItems');
+        const alertIcon = document.getElementById('alertIcon');
+        const alertTitle = document.getElementById('alertTitle');
+
+        if (lowStockProducts.length === 0) {
+          // No low stock items
+          card.classList.add('no-alerts');
+          alertIcon.textContent = '✅';
+          alertTitle.textContent = 'All Stock Levels Good';
+          itemsContainer.innerHTML = '<p style="color: #22543d;">All products are above minimum stock level</p>';
+          return;
+        }
+
+        // Show low stock items
+        alertTitle.textContent = `Low Stock Alert (${lowStockProducts.length} items)`;
+        
+        let html = '';
+        lowStockProducts.forEach(product => {
+          const unitsBelow = product.min_stock - product.quantity;
+          html += `
+            <div class="lowstock-item">
+              ${product.name} - ${product.quantity}/${product.min_stock} 
+              (need ${unitsBelow} more)
+            </div>
+          `;
+        });
+        
+        itemsContainer.innerHTML = html;
+      }
+
+      // DISPLAY DAILY SALES CHART
+      
+      function displayDailySalesChart(salesData) {
+        // Hide loading spinner
+        document.getElementById('linechartLoading').style.display = 'none';
+        document.getElementById('lineChartContainer').style.display = 'block';
+
+        const lineCanvas = document.getElementById('lineChart');
+        const lineCtx = lineCanvas.getContext('2d');
+
+        // Prepare data
+        const days = salesData.map(d => formatDate(d.sale_day));
+        const revenues = salesData.map(d => parseFloat(d.total_revenue) || 0);
+
+        // Canvas dimensions
+        const padding = 60;
+        const chartWidth = lineCanvas.width - padding * 2;
+        const chartHeight = lineCanvas.height - padding * 2;
+
+        const maxRevenue = Math.max(...revenues, 1);
+        const stepX = salesData.length > 1 
+          ? chartWidth / (salesData.length - 1) 
+          : chartWidth / 2;
+
+        // Clear canvas
+        lineCtx.fillStyle = '#ffffff';
+        lineCtx.fillRect(0, 0, lineCanvas.width, lineCanvas.height);
+
+        // Draw grid lines
+        lineCtx.strokeStyle = '#e2e8f0';
+        lineCtx.lineWidth = 1;
+        lineCtx.fillStyle = '#718096';
+        lineCtx.font = '12px Arial';
+        lineCtx.textAlign = 'right';
+        lineCtx.textBaseline = 'middle';
+
+        const yTicks = 5;
+        for (let i = 0; i <= yTicks; i++) {
+          const value = (maxRevenue / yTicks) * i;
+          const y = lineCanvas.height - padding - (value / maxRevenue) * chartHeight;
+
+          lineCtx.beginPath();
+          lineCtx.moveTo(padding, y);
+          lineCtx.lineTo(lineCanvas.width - padding, y);
+          lineCtx.stroke();
+
+          lineCtx.fillText(formatCurrency(value), padding - 10, y);
+        }
+
+        // Draw axes
+        lineCtx.strokeStyle = '#2d3748';
+        lineCtx.lineWidth = 2;
         lineCtx.beginPath();
-        lineCtx.moveTo(padding, y);
-        lineCtx.lineTo(lineCanvas.width - padding, y);
+        lineCtx.moveTo(padding, padding);
+        lineCtx.lineTo(padding, lineCanvas.height - padding);
+        lineCtx.lineTo(lineCanvas.width - padding, lineCanvas.height - padding);
         lineCtx.stroke();
 
-        // Y label
-        lineCtx.fillText(value.toFixed(0), padding - 10, y);
+        // Draw line
+        lineCtx.beginPath();
+        revenues.forEach((value, index) => {
+          const x = padding + index * stepX;
+          const y = lineCanvas.height - padding - (value / maxRevenue) * chartHeight;
+
+          if (index === 0) {
+            lineCtx.moveTo(x, y);
+          } else {
+            lineCtx.lineTo(x, y);
+          }
+        });
+
+        lineCtx.strokeStyle = '#3182CE';
+        lineCtx.lineWidth = 3;
+        lineCtx.stroke();
+
+        // Draw points
+        revenues.forEach((value, index) => {
+          const x = padding + index * stepX;
+          const y = lineCanvas.height - padding - (value / maxRevenue) * chartHeight;
+
+          lineCtx.beginPath();
+          lineCtx.arc(x, y, 5, 0, Math.PI * 2);
+          lineCtx.fillStyle = '#3182CE';
+          lineCtx.fill();
+        });
+
+        // Draw X-axis labels
+        lineCtx.fillStyle = '#2d3748';
+        lineCtx.font = '11px Arial';
+        lineCtx.textAlign = 'center';
+        lineCtx.textBaseline = 'top';
+
+        days.forEach((day, index) => {
+          const x = padding + index * stepX;
+          const y = lineCanvas.height - padding + 10;
+          lineCtx.fillText(day, x, y);
+        });
       }
 
-      // Draw axes
-      lineCtx.strokeStyle = "#2d3748";
-      lineCtx.lineWidth = 2;
-      lineCtx.beginPath();
-      lineCtx.moveTo(padding, padding);
-      lineCtx.lineTo(padding, lineCanvas.height - padding);
-      lineCtx.lineTo(lineCanvas.width - padding, lineCanvas.height - padding);
-      lineCtx.stroke();
+      // DISPLAY TOP PRODUCTS CHART
+      
+      function displayTopProductsChart(topProducts) {
+        // Hide loading spinner
+        document.getElementById('barchartLoading').style.display = 'none';
+        document.getElementById('barChartContainer').style.display = 'block';
 
-      // Draw line
-      lineCtx.beginPath();
-      salesData.forEach((value, index) => {
-        const x = padding + index * stepX;
-        const y =
-          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
+        const barCanvas = document.getElementById('barChart');
+        const barCtx = barCanvas.getContext('2d');
 
-        if (index === 0) {
-          lineCtx.moveTo(x, y);
-        } else {
-          lineCtx.lineTo(x, y);
+        // Prepare data
+        const productNames = topProducts.map(p => p.product_name);
+        const revenues = topProducts.map(p => parseFloat(p.total_revenue) || 0);
+
+        const padding = 60;
+        const chartWidth = barCanvas.width - padding * 2;
+        const chartHeight = barCanvas.height - padding * 2;
+
+        const maxRevenue = Math.max(...revenues, 1);
+        const barWidth = 60;
+        const spacing = 40;
+        const totalBarsWidth = topProducts.length * barWidth + (topProducts.length - 1) * spacing;
+        const barStartX = (barCanvas.width - totalBarsWidth) / 2;
+        const barScale = chartHeight / maxRevenue;
+
+        // Clear canvas
+        barCtx.fillStyle = '#ffffff';
+        barCtx.fillRect(0, 0, barCanvas.width, barCanvas.height);
+
+        // Draw grid lines
+        barCtx.strokeStyle = '#e2e8f0';
+        barCtx.lineWidth = 1;
+        barCtx.fillStyle = '#718096';
+        barCtx.font = '12px Arial';
+        barCtx.textAlign = 'right';
+        barCtx.textBaseline = 'middle';
+
+        const yTicks = 5;
+        for (let i = 0; i <= yTicks; i++) {
+          const value = (maxRevenue / yTicks) * i;
+          const y = barCanvas.height - padding - (value / maxRevenue) * chartHeight;
+
+          barCtx.beginPath();
+          barCtx.moveTo(padding, y);
+          barCtx.lineTo(barCanvas.width - padding, y);
+          barCtx.stroke();
+
+          barCtx.fillText(formatCurrency(value), padding - 10, y);
         }
-      });
 
-      lineCtx.strokeStyle = "#3182CE";
-      lineCtx.lineWidth = 3;
-      lineCtx.stroke();
-
-      // Draw points
-      salesData.forEach((value, index) => {
-        const x = padding + index * stepX;
-        const y =
-          lineCanvas.height - padding - (value / maxSalesValue) * chartHeight;
-
-        lineCtx.beginPath();
-        lineCtx.arc(x, y, 5, 0, Math.PI * 2);
-        lineCtx.fillStyle = "#3182CE";
-        lineCtx.fill();
-      });
-
-      // Draw X-axis labels
-      lineCtx.fillStyle = "#2d3748";
-      lineCtx.font = "11px Arial";
-      lineCtx.textAlign = "center";
-      lineCtx.textBaseline = "top";
-
-      days.forEach((day, index) => {
-        const x = padding + index * stepX;
-        const y = lineCanvas.height - padding + 10;
-        lineCtx.fillText(day, x, y);
-      });
-
-      // BAR CHART
-      const barCanvas = document.getElementById("barChart");
-      const barCtx = barCanvas.getContext("2d");
-
-      const maxBarValue = Math.max(...topProducts.map((p) => p.value));
-      const barWidth = 80;
-      const totalBarsWidth =
-        topProducts.length * barWidth + (topProducts.length - 1) * 40;
-      const barStartX = (barCanvas.width - totalBarsWidth) / 2;
-      const barScale = chartHeight / maxBarValue;
-
-      // Draw grid lines and Y-axis labels
-      barCtx.strokeStyle = "#e2e8f0";
-      barCtx.lineWidth = 1;
-      barCtx.fillStyle = "#718096";
-      barCtx.font = "12px Arial";
-      barCtx.textAlign = "right";
-      barCtx.textBaseline = "middle";
-
-      for (let i = 0; i <= yTicks; i++) {
-        const value = (maxBarValue / yTicks) * i;
-        const y =
-          barCanvas.height - padding - (value / maxBarValue) * chartHeight;
-
-        // Grid line
+        // Draw axes
+        barCtx.strokeStyle = '#2d3748';
+        barCtx.lineWidth = 2;
         barCtx.beginPath();
-        barCtx.moveTo(padding, y);
-        barCtx.lineTo(barCanvas.width - padding, y);
+        barCtx.moveTo(padding, padding);
+        barCtx.lineTo(padding, barCanvas.height - padding);
+        barCtx.lineTo(barCanvas.width - padding, barCanvas.height - padding);
         barCtx.stroke();
 
-        // Y label
-        barCtx.fillText(value.toFixed(0), padding - 10, y);
+        // Draw bars
+        topProducts.forEach((product, index) => {
+          const x = barStartX + index * (barWidth + spacing);
+          const height = parseFloat(product.total_revenue || 0) * barScale;
+          const y = barCanvas.height - padding - height;
+
+          barCtx.fillStyle = '#3182CE';
+          barCtx.fillRect(x, y, barWidth, height);
+        });
+
+        // Draw X-axis labels
+        barCtx.fillStyle = '#2d3748';
+        barCtx.font = '12px Arial';
+        barCtx.textAlign = 'center';
+        barCtx.textBaseline = 'top';
+
+        topProducts.forEach((product, index) => {
+          const x = barStartX + index * (barWidth + spacing) + barWidth / 2;
+          const y = barCanvas.height - padding + 10;
+          barCtx.fillText(product.product_name || 'Unknown', x, y);
+        });
       }
 
-      // Draw axes
-      barCtx.strokeStyle = "#2d3748";
-      barCtx.lineWidth = 2;
-      barCtx.beginPath();
-      barCtx.moveTo(padding, padding);
-      barCtx.lineTo(padding, barCanvas.height - padding);
-      barCtx.lineTo(barCanvas.width - padding, barCanvas.height - padding);
-      barCtx.stroke();
+      // HELPER FUNCTIONS
+    
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${month}/${day}`;
+      }
 
-      // Draw bars
-      topProducts.forEach((product, index) => {
-        const x = barStartX + index * (barWidth + 40);
-        const height = product.value * barScale;
-        const y = barCanvas.height - padding - height;
+      function formatCurrency(value) {
+        if (value >= 1000000) {
+          return 'MK' + (value / 1000000).toFixed(1) + 'M';
+        } else if (value >= 1000) {
+          return 'MK' + (value / 1000).toFixed(1) + 'K';
+        }
+        return 'MK' + value.toFixed(0);
+      }
 
-        barCtx.fillStyle = "#3182CE";
-        barCtx.fillRect(x, y, barWidth, height);
+      // NAVIGATION
+      
+      document.getElementById('home').addEventListener('click', () => {
+        window.location.href = 'Dashboard.html';
       });
 
-      // Draw X-axis labels
-      barCtx.fillStyle = "#2d3748";
-      barCtx.font = "12px Arial";
-      barCtx.textAlign = "center";
-      barCtx.textBaseline = "top";
-
-      topProducts.forEach((product, index) => {
-        const x = barStartX + index * (barWidth + 40) + barWidth / 2;
-        const y = barCanvas.height - padding + 10;
-        barCtx.fillText(product.name, x, y);
+      document.getElementById('sales').addEventListener('click', () => {
+        window.location.href = 'Sales.html';
       });
 
-      document.getElementById("home").addEventListener("click", () => {
-        window.location.href = "Dashboard.html";
+      document.getElementById('product').addEventListener('click', () => {
+        window.location.href = 'products.html';
       });
 
-      document.getElementById("sales").addEventListener("click", () => {
-        window.location.href = "Sales.html";
+      document.getElementById('analytics').addEventListener('click', () => {
+        window.location.href = 'analytics.html';
       });
 
-      document.getElementById("product").addEventListener("click", () => {
-        window.location.href = "products.html";
-      });
+      // LOAD DATA ON PAGE LOAD
 
-      document.getElementById("analytics").addEventListener("click", () => {
-        window.location.href = "analytics.html";
+      document.addEventListener('DOMContentLoaded', () => {
+        fetchAnalyticsData();
+        
+        // Refresh data every 30 seconds
+        setInterval(fetchAnalyticsData, 30000);
       });
     </script>
-
-    
-
-
-     <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-  <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      'https://vvaveobusmzlughhxgcf.supabase.co',
-      'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'
-    );
-
-    const userNameBtn = document.getElementById('userNameBtn');
-    const dropdown = document.getElementById('userDropdown');
-    const editNameBtn = document.getElementById('editNameBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    // Toggle dropdown
-    userNameBtn.onclick = () => {
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    };
-
-    // Load user
-    async function loadUser() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-
-      if (!user) {
-        location.href = 'Landing.html';
-        return;
-      }
-
-      userNameBtn.textContent = user.user_metadata.full_name || 'User';
-    }
-
-    loadUser();
-
-    // Edit name
-    editNameBtn.onclick = async () => {
-      const newName = prompt('Enter your name:', userNameBtn.textContent);
-      if (!newName) return;
-
-      const { error } = await supabaseClient.auth.updateUser({
-        data: { full_name: newName.trim() }
-      });
-
-      if (!error) {
-        userNameBtn.textContent = newName.trim();
-        dropdown.style.display = 'none';
-      }
-    };
-
-    // Logout
-    logoutBtn.onclick = async () => {
-      await supabaseClient.auth.signOut();
-      location.href = 'Landing.html';
-    };
-
-    // Close dropdown on outside click
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.user-menu')) {
-        dropdown.style.display = 'none';
-      }
-    });
-  </script>
-
   </body>
 </html>

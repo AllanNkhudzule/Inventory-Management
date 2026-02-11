@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inventory</title>
+    <title>Inventory - Login</title>
 
     <script>
   function togglePassword(inputId, icon) {
@@ -246,12 +246,13 @@
     <script>
       const { createClient } = supabase;
 
+      // FIXED: Use your actual Supabase anon key (this appears to be a publishable key format)
       const supabaseClient = createClient(
         'https://vvaveobusmzlughhxgcf.supabase.co',
-        'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl'  
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2YXZlb2J1c216bHVnaGh4Z2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0OTg3MDcsImV4cCI6MjA4NDA3NDcwN30.25zYCjVAeQIkhD3n81jjZ6M5P2b-yUp-ZL4Y3hvlZV4'
       );
 
-      console.log('Landing.html: Supabase client initialized →', !!supabaseClient);
+      console.log('Landing.html: Supabase client initialized ->', !!supabaseClient);
 
 
       //SIGN IN WITH EMAIL AND PASSWORD
@@ -286,7 +287,7 @@
           window.location.href = 'Dashboard.html';
 
         } catch (err) {
-          errorMsg.textContent = err.message || 'Login failed – check your credentials';
+          errorMsg.textContent = err.message || 'Login failed - check your credentials';
           errorMsg.style.display = 'block';
           console.error('Login error:', err);
         } finally {
@@ -325,6 +326,18 @@
       document.getElementById('continue').addEventListener('click', signInWithEmail);
       document.getElementById('googleSignIn').addEventListener('click', signInWithGoogle);
 
+      // ADDED: Allow Enter key to submit login form
+      document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          signInWithEmail();
+        }
+      });
+
+      document.getElementById('emailInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          signInWithEmail();
+        }
+      });
   
     </script>
   </body>

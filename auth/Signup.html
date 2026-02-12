@@ -277,22 +277,13 @@
         <p>Already have an Account? <a href="Landing.html">Log in</a></p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
     <script>
-        const { createClient } = supabase;
-
-        // FIXED: Use your actual Supabase anon key
-        const supabaseClient = createClient(
-            'https://vvaveobusmzlughhxgcf.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2YXZlb2J1c216bHVnaGh4Z2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0OTg3MDcsImV4cCI6MjA4NDA3NDcwN30.25zYCjVAeQIkhD3n81jjZ6M5P2b-yUp-ZL4Y3hvlZV4'
-        );
+        const API_BASE_URL = 'http://localhost:3000';
 
         async function handleSignup() {
             const errorMsg = document.getElementById('errorMessage');
             const btn = document.getElementById('continue');
 
-            // FIXED: Use proper input IDs for selection
             const firstName = document.getElementById('firstNameInput').value.trim();
             const lastName = document.getElementById('lastNameInput').value.trim();
             const businessName = document.getElementById('businessNameInput').value.trim();
@@ -319,7 +310,6 @@
                 return;
             }
 
-            // ADDED: Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 errorMsg.style.display = 'block';
@@ -332,30 +322,32 @@
             btn.textContent = 'Signing up...';
 
             try {
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email: email,
-                    password: password,
-                    full_name: `${firstName} ${lastName}`.trim(),
-                    business_name: businessName,
-                    phone: phoneNumber
-
-
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        firstName,
+                        lastName,
+                        businessName,
+                        phoneNumber
+                    })
                 });
 
-                if (error) throw error;
+                const data = await response.json();
 
-                if (data.user) {
-                    if (data.session) {
-                        alert('Account created! You are now signed in.');
-                        window.location.href = 'Dashboard.html';
-                    } else {
-                        alert('Account created! Please check your email and click the confirmation link.');
-                        // FIXED: Redirect to login after email confirmation message
-                        setTimeout(() => {
-                            window.location.href = 'Landing.html';
-                        }, 3000);
-                    }
+                if (!response.ok) {
+                    throw new Error(data.error || 'Signup failed');
                 }
+
+                alert('Account created! Please check your email to confirm your account.');
+                
+                setTimeout(() => {
+                    window.location.href = 'Landing.html';
+                }, 2000);
 
             } catch (err) {
                 errorMsg.style.display = 'block';
@@ -367,7 +359,6 @@
             }
         }
 
-        // ADDED: Allow Enter key to submit form
         document.getElementById('confirmPassword').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 handleSignup();

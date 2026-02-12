@@ -250,13 +250,30 @@
     </nav>
 
     <script>
-      const API_URL = 'http://localhost:3000/Inventory-Management/analytics';
+      const API_URL = 'http://localhost:3000/app/analytics';
+
+      // Check authentication
+      function checkAuth() {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          location.href = '../auth/Landing.html';
+          return false;
+        }
+        return token;
+      }
 
         // FETCH DATA FROM BACKEND
       
       async function fetchAnalyticsData() {
+        const token = checkAuth();
+        if (!token) return;
+
         try {
-          const response = await fetch(`${API_URL}/summary`);
+          const response = await fetch(`${API_URL}/summary`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

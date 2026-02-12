@@ -476,10 +476,20 @@
 
 <script>
   // API Configuration
-  const API_URL = 'http://localhost:3000/Inventory-Management/products';
+  const API_URL = 'http://localhost:3000/app/products';
 
   let products = [];
   let editingId = null;
+
+  // Check authentication
+  function checkAuth() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      location.href = '../auth/Landing.html';
+      return false;
+    }
+    return token;
+  }
 
   // ============================================
   // Alert Helper
@@ -500,10 +510,22 @@
   // Load Products from Backend
   // ============================================
   async function loadProducts() {
+    const token = checkAuth();
+    if (!token) return;
+
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       
       if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem('authToken');
+          location.href = '../auth/Landing.html';
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -534,8 +556,8 @@
       document.getElementById('name').value = product.name;
       document.getElementById('price').value = product.price;
       document.getElementById('quantity').value = product.quantity;
-      document.getElementById('category').value = product.category;
-      document.getElementById('minStock').value = product.minStock;
+      document.getElementById('category').value = product.categories?.name || product.category;
+      document.getElementById('minStock').value = product.min_stock || product.minStock;
     } else {
       editingId = null;
       title.textContent = 'Add New Product';
@@ -559,6 +581,9 @@
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const token = checkAuth();
+    if (!token) return;
+
     const productData = {
       name: document.getElementById('name').value,
       price: parseFloat(document.getElementById('price').value),
@@ -575,7 +600,10 @@
         // UPDATE existing product
         response = await fetch(`${API_URL}/${editingId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(productData)
         });
         message = 'Product updated successfully!';
@@ -583,7 +611,10 @@
         // CREATE new product
         response = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(productData)
         });
         message = 'Product added successfully!';
@@ -611,9 +642,15 @@
       return;
     }
 
+    const token = checkAuth();
+    if (!token) return;
+
     try {
       const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (!response.ok) {
@@ -655,10 +692,11 @@
 
     let filteredProducts = products;
     if (searchQuery) {
-      filteredProducts = products.filter(p => 
-        p.name.toLowerCase().includes(searchQuery) ||
-        p.category.toLowerCase().includes(searchQuery)
-      );
+      filteredProducts = products.filter(p => {
+        const category = p.categories?.name || p.category || '';
+        return p.name.toLowerCase().includes(searchQuery) ||
+               category.toLowerCase().includes(searchQuery);
+      });
     }
 
     if (filteredProducts.length === 0) {
@@ -670,15 +708,17 @@
 
     let html = '';
     filteredProducts.forEach(product => {
-      const isLowStock = product.quantity <= product.minStock;
+      const minStock = product.min_stock || product.minStock || 0;
+      const isLowStock = product.quantity <= minStock;
       const quantityClass = isLowStock ? 'text-warning' : '';
+      const category = product.categories?.name || product.category || 'N/A';
 
       html += '<tr>' +
         '<td>' + escapeHtml(product.name) + '</td>' +
-        '<td>' + escapeHtml(product.category) + '</td>' +
+        '<td>' + escapeHtml(category) + '</td>' +
         '<td class="text-right">MK ' + product.price.toFixed(2) + '</td>' +
         '<td class="text-right"><span class="' + quantityClass + '">' + product.quantity + '</span></td>' +
-        '<td class="text-right">' + product.minStock + '</td>' +
+        '<td class="text-right">' + minStock + '</td>' +
         '<td class="text-right">' +
         '<div class="actions-cell">' +
         '<button class="btn btn-ghost" onclick="editProduct(\'' + product.id + '\')" title="Edit">' +

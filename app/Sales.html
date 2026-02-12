@@ -316,29 +316,47 @@
     </button>
   </nav>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
   <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      'https://vvaveobusmzlughhxgcf.supabase.co',
-      'sb_publishable_fV0b1w74R4IfJw_7mehjqg_4f5LitDl' 
-    );
-
+    const API_BASE_URL = 'http://localhost:3000';
     const userNameBtn = document.getElementById('userNameBtn');
     const dropdown = document.getElementById('userDropdown');
     const editNameBtn = document.getElementById('editNameBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+
+    // Check authentication
+    function checkAuth() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        location.href = '../auth/Landing.html';
+        return false;
+      }
+      return token;
+    }
 
     userNameBtn.onclick = () => {
       dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     };
 
     async function loadUser() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) return location.href = 'Landing.html';
-      userNameBtn.textContent = (user.user_metadata.full_name || 'User') + ' ▾';
+      const token = checkAuth();
+      if (!token) return;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/user`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch user');
+
+        const data = await response.json();
+        userNameBtn.textContent = (data.user.user_metadata?.full_name || data.user.email) + ' ▾';
+      } catch (error) {
+        console.error('Error loading user:', error);
+        localStorage.removeItem('authToken');
+        location.href = '../auth/Landing.html';
+      }
     }
 
     loadUser();
@@ -347,19 +365,43 @@
       const newName = prompt('Enter your name:', userNameBtn.textContent.replace(' ▾', ''));
       if (!newName) return;
 
-      const { error } = await supabaseClient.auth.updateUser({
-        data: { full_name: newName.trim() }
-      });
+      const token = checkAuth();
+      if (!token) return;
 
-      if (!error) {
-        userNameBtn.textContent = newName.trim() + ' ▾';
-        dropdown.style.display = 'none';
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/update-profile`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ fullName: newName.trim() })
+        });
+
+        if (response.ok) {
+          userNameBtn.textContent = newName.trim() + ' ▾';
+          dropdown.style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Error updating name:', error);
       }
     };
 
     logoutBtn.onclick = async () => {
-      await supabaseClient.auth.signOut();
-      location.href = 'Landing.html';
+      const token = checkAuth();
+      if (token) {
+        try {
+          await fetch(`${API_BASE_URL}/auth/signout`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      }
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      location.href = '../auth/Landing.html';
     };
 
     document.addEventListener('click', (e) => {
